@@ -11,6 +11,7 @@
 ### 使用：
 
 > 快速翻译 `$translate  'mkTranslate 支持多种语言的互译'` 将使用默认的 google 翻译且目标语言为'en'
+
 > 快速翻译 `$translate  'mkTranslate 支持多种语言的互译' -d 'ja'` 将使用默认的 google翻译
 
 ```
