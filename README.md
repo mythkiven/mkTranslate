@@ -1,4 +1,4 @@
-# mkTranslate(V1.2.0)
+# mkTranslate(V1.2.0)：支持多种语言的互译
 
 ### 安装：
 
