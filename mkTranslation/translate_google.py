@@ -105,7 +105,40 @@ class mkGoogleTranslator(object):
         if(r.text):
             data = utils.format_json(r.text)
         return data
+    def translate_text(self,text,dest):
+        if isinstance(text, list):
+            result = []
+            for item in text:
+                lang = self.detect(item)
+                result.append(lang)
+            return result
+        origin = text
+        data = self._translate(text, dest, src='auto')
+        translated = ''.join([d[0] if d[0] else '' for d in data[0]])
+        extra_data = self._parse_extra_data(data)
+        try:
+            src = data[2]
+        except Exception:
+            pass
 
+        pron = origin
+        try:
+            pron = data[0][1][-2]
+        except Exception:
+            pass
+        if not PY3 and isinstance(pron, unicode) and isinstance(origin, str):
+            origin = origin.decode('utf-8')
+        if dest in EXCLUDES and pron == origin:
+            pron = translated
+        if not PY3:
+            if isinstance(src, str):
+                src = src.decode('utf-8')
+            if isinstance(dest, str):
+                dest = dest.decode('utf-8')
+            if isinstance(translated, str):
+                translated = translated.decode('utf-8')
+        result = Translated(src=src, dest=dest, origin=origin,text=translated, pronunciation=pron, extra_data=extra_data)
+        return result
     def detect(self, text):
         if isinstance(text, list):
             result = []

@@ -98,7 +98,8 @@ class mkTranslator(object):
         f = open(newfile,'w+')
         f.write(txd)
         f.close()
-
+    def translate_text(self,text, destination,language):
+        print(mkGoogleTranslator().translate_text(text, dest=destination).text)
     def translate_doc(self,filepath, destination,language):
         filepath = self.get_file(filepath)
         pathArray = filepath.split('/')

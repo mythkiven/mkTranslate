@@ -1,125 +1,15 @@
-# mkTranslate(V.1.2)
+# mkTranslate(V1.1.3)
 
 ### 安装：
 
 `pip install mkTranslation`
 
-### 支持的文件和语种:
-
-- 支持 txt、iOS(.strings) 和 Android(.xml) 的配置文件
-
-- 支持翻译的语言
-支持如下任意两个语种互译
-```
-'af': 'afrikaans',
-    'sq': 'albanian',
-    'am': 'amharic',
-    'ar': 'arabic',
-    'hy': 'armenian',
-    'az': 'azerbaijani',
-    'eu': 'basque',
-    'be': 'belarusian',
-    'bn': 'bengali',
-    'bs': 'bosnian',
-    'bg': 'bulgarian',
-    'ca': 'catalan',
-    'ceb': 'cebuano',
-    'ny': 'chichewa',
-    'zh-cn': 'chinese (simplified)',
-    'zh-tw': 'chinese (traditional)',
-    'co': 'corsican',
-    'hr': 'croatian',
-    'cs': 'czech',
-    'da': 'danish',
-    'nl': 'dutch',
-    'en': 'english',
-    'eo': 'esperanto',
-    'et': 'estonian',
-    'tl': 'filipino',
-    'fi': 'finnish',
-    'fr': 'french',
-    'fy': 'frisian',
-    'gl': 'galician',
-    'ka': 'georgian',
-    'de': 'german',
-    'el': 'greek',
-    'gu': 'gujarati',
-    'ht': 'haitian creole',
-    'ha': 'hausa',
-    'haw': 'hawaiian',
-    'iw': 'hebrew',
-    'hi': 'hindi',
-    'hmn': 'hmong',
-    'hu': 'hungarian',
-    'is': 'icelandic',
-    'ig': 'igbo',
-    'id': 'indonesian',
-    'ga': 'irish',
-    'it': 'italian',
-    'ja': 'japanese',
-    'jw': 'javanese',
-    'kn': 'kannada',
-    'kk': 'kazakh',
-    'km': 'khmer',
-    'ko': 'korean',
-    'ku': 'kurdish (kurmanji)',
-    'ky': 'kyrgyz',
-    'lo': 'lao',
-    'la': 'latin',
-    'lv': 'latvian',
-    'lt': 'lithuanian',
-    'lb': 'luxembourgish',
-    'mk': 'macedonian',
-    'mg': 'malagasy',
-    'ms': 'malay',
-    'ml': 'malayalam',
-    'mt': 'maltese',
-    'mi': 'maori',
-    'mr': 'marathi',
-    'mn': 'mongolian',
-    'my': 'myanmar (burmese)',
-    'ne': 'nepali',
-    'no': 'norwegian',
-    'ps': 'pashto',
-    'fa': 'persian',
-    'pl': 'polish',
-    'pt': 'portuguese',
-    'pa': 'punjabi',
-    'ro': 'romanian',
-    'ru': 'russian',
-    'sm': 'samoan',
-    'gd': 'scots gaelic',
-    'sr': 'serbian',
-    'st': 'sesotho',
-    'sn': 'shona',
-    'sd': 'sindhi',
-    'si': 'sinhala',
-    'sk': 'slovak',
-    'sl': 'slovenian',
-    'so': 'somali',
-    'es': 'spanish',
-    'su': 'sundanese',
-    'sw': 'swahili',
-    'sv': 'swedish',
-    'tg': 'tajik',
-    'ta': 'tamil',
-    'te': 'telugu',
-    'th': 'thai',
-    'tr': 'turkish',
-    'uk': 'ukrainian',
-    'ur': 'urdu',
-    'uz': 'uzbek',
-    'vi': 'vietnamese',
-    'cy': 'welsh',
-    'xh': 'xhosa',
-    'yi': 'yiddish',
-    'yo': 'yoruba',
-    'zu': 'zulu',
-    'fil': 'Filipino',
-    'he': 'Hebrew'
-```
-
 ### 使用：
+```
+-p 指定要翻译文档的路径 -t 指定要翻译的文本 -d 目标语言(缺省'en')
+```
+
+- 翻译文档
 
 ```
 translate -p ./ios.strings -d 'pt'
@@ -127,7 +17,138 @@ translate -p ./android.xml -d 'pt'
 translate -p ./test.txt -d 'pt'
 自动在原始文件目录生成翻译后的文件  translate_pt_android.xml translate_pt_ios.strings translate_pt_test.txt
 ```
+
+- 翻译文本
+
+```
+$ py translate -t '一篇仅仅12页的白皮书，让Facebook从社交巨头一跃成为了人们口中的“互联网美联储”，发布的加密货币Libra也被网友戏称为“世界的Q币”' -d 'pt'
+# 指定目标语言是葡萄牙语
+Um white paper de 12 páginas fez com que o Facebook saltasse do gigante social para o "Fed da Internet" na boca das pessoas.A Libra criptografada lançada pelos internautas também foi apelidada pelos internautas como "a moeda Q do mundo".
+
+$py translate -t 'Facebook發幣，是偉大征途還是飛蛾撲火？'
+# 默认目标语言是'en'
+Facebook currency, is it a great journey or a moth?
+```
+
 更多用法 参见 `translate -h`
+
+
+### 支持的文件和语种:
+
+- 支持 txt、iOS(.strings) 和 Android(.xml) 的配置文件
+
+- 支持翻译的语言
+
+支持如下任意两个语种互译
+
+```
+'af': 'afrikaans',
+'sq': 'albanian',
+'am': 'amharic',
+'ar': 'arabic',
+'hy': 'armenian',
+'az': 'azerbaijani',
+'eu': 'basque',
+'be': 'belarusian',
+'bn': 'bengali',
+'bs': 'bosnian',
+'bg': 'bulgarian',
+'ca': 'catalan',
+'ceb': 'cebuano',
+'ny': 'chichewa',
+'zh-cn': 'chinese (simplified)',
+'zh-tw': 'chinese (traditional)',
+'co': 'corsican',
+'hr': 'croatian',
+'cs': 'czech',
+'da': 'danish',
+'nl': 'dutch',
+'en': 'english',
+'eo': 'esperanto',
+'et': 'estonian',
+'tl': 'filipino',
+'fi': 'finnish',
+'fr': 'french',
+'fy': 'frisian',
+'gl': 'galician',
+'ka': 'georgian',
+'de': 'german',
+'el': 'greek',
+'gu': 'gujarati',
+'ht': 'haitian creole',
+'ha': 'hausa',
+'haw': 'hawaiian',
+'iw': 'hebrew',
+'hi': 'hindi',
+'hmn': 'hmong',
+'hu': 'hungarian',
+'is': 'icelandic',
+'ig': 'igbo',
+'id': 'indonesian',
+'ga': 'irish',
+'it': 'italian',
+'ja': 'japanese',
+'jw': 'javanese',
+'kn': 'kannada',
+'kk': 'kazakh',
+'km': 'khmer',
+'ko': 'korean',
+'ku': 'kurdish (kurmanji)',
+'ky': 'kyrgyz',
+'lo': 'lao',
+'la': 'latin',
+'lv': 'latvian',
+'lt': 'lithuanian',
+'lb': 'luxembourgish',
+'mk': 'macedonian',
+'mg': 'malagasy',
+'ms': 'malay',
+'ml': 'malayalam',
+'mt': 'maltese',
+'mi': 'maori',
+'mr': 'marathi',
+'mn': 'mongolian',
+'my': 'myanmar (burmese)',
+'ne': 'nepali',
+'no': 'norwegian',
+'ps': 'pashto',
+'fa': 'persian',
+'pl': 'polish',
+'pt': 'portuguese',
+'pa': 'punjabi',
+'ro': 'romanian',
+'ru': 'russian',
+'sm': 'samoan',
+'gd': 'scots gaelic',
+'sr': 'serbian',
+'st': 'sesotho',
+'sn': 'shona',
+'sd': 'sindhi',
+'si': 'sinhala',
+'sk': 'slovak',
+'sl': 'slovenian',
+'so': 'somali',
+'es': 'spanish',
+'su': 'sundanese',
+'sw': 'swahili',
+'sv': 'swedish',
+'tg': 'tajik',
+'ta': 'tamil',
+'te': 'telugu',
+'th': 'thai',
+'tr': 'turkish',
+'uk': 'ukrainian',
+'ur': 'urdu',
+'uz': 'uzbek',
+'vi': 'vietnamese',
+'cy': 'welsh',
+'xh': 'xhosa',
+'yi': 'yiddish',
+'yo': 'yoruba',
+'zu': 'zulu',
+'fil': 'Filipino',
+'he': 'Hebrew'
+```
 
 
 ### demo
@@ -204,6 +225,10 @@ gw_input_title_signtx_usdt ="Pagar taxa de manuseio do USDT:%ld/%@"; /**"支付 
 </resources>
 ```
 
+
+### 版本
+
+- V1.1.3 增加命令行直接翻译文本
 
 ### 后续：
 
