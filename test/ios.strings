@@ -1,9 +1,9 @@
-common_btn_sdk_pin_error = "錯誤";
-common_btn_sdk_pin_error = "PIN碼輸入錯誤，請檢查輸入！"; /**"PIN碼輸入錯誤，請檢查輸入！"*/
-common_btn_sdk_cys_error = "助記詞或助記詞密碼錯誤，請檢查輸入！"; /**"助記詞或助記詞密碼錯誤，請檢查輸入！"*/
-Home_alertview_pin = "請在設備上輸入PIN碼..."; /**"請在設備上輸入PIN碼..."*/
-Home_alertview_cpinconnect = "正在建立連接.."; /**"正在建立連接.."*/
-Home_alertview_cpinunconnect = "已斷開連接"; /**"已斷開連接"*/
+common_btn_sdk_pin_error = "错误";
+common_btn_sdk_pin_error = "PIN码输入错误，请检查输入！"; /**"PIN码输入错误，请检查输入！"*/
+common_btn_sdk_cys_error = "助记词或助记词密码错误，请检查输入！"; /**"助记词或助记词密码错误，请检查输入！"*/
+Home_alertview_pin = "请在设备上输入PIN码..."; /**"请在设备上输入PIN码..."*/
+Home_alertview_cpinconnect = "正在建立连接.."; /**"正在建立连接.."*/
+Home_alertview_cpinunconnect = "已断开连接"; /**"已断开连接"*/
 /** ********************************************   */
 gw_input_title_signtx = "%@/%@转账"; /**"%@转账"*/
-gw_input_title_signtx_usdt = "支付USDT手續費:%ld/%@"; /**"支付USDT手續費:%ld/%@"*/
+gw_input_title_signtx_usdt = "支付USDT手续费:%ld/%@"; /**"支付USDT手续费:%ld/%@"*/

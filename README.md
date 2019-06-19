@@ -5,8 +5,13 @@
 `pip install mkTranslation`
 
 ### 使用：
+
 ```
--p 指定要翻译文档的路径 -t 指定要翻译的文本 -d 目标语言(缺省'en')
+-p 指定要翻译文档的路径
+-t 指定要翻译的文本
+-d 目标语言(缺省'en')
+-c 指定翻译渠道:[-c "google"] or [-c "youdao"] (缺省google)
+-s 原始语言，有道翻译检测原始文本语言不太准确，翻译的结果会不太准确，所以使用有道翻译时，最好要指定原始的语言
 ```
 
 - 翻译文档
@@ -14,7 +19,7 @@
 ```
 translate -p ./ios.strings -d 'pt'
 translate -p ./android.xml -d 'pt'
-translate -p ./test.txt -d 'pt'
+translate -p ./test.txt -d 'pt' -c 'youdao' -s 'zh'
 自动在原始文件目录生成翻译后的文件  translate_pt_android.xml translate_pt_ios.strings translate_pt_test.txt
 ```
 
@@ -228,7 +233,12 @@ gw_input_title_signtx_usdt ="Pagar taxa de manuseio do USDT:%ld/%@"; /**"支付 
 
 ### 版本
 
+- V1.2.0 增加有道翻译，
+有道会对ip封锁，所以可能出现无法翻译的问题，此时将会使用 api 接口翻译，本人申请的 api 接口仅支持中英互译。[使用的key](http://fengmm521.lofter.com/post/2a9e99_7475571)
 - V1.1.3 增加命令行直接翻译文本
+
+更新本机的 mkTranslation：`pip install --upgrade mkTranslation`
+查看本机的 mkTranslation 信息：
 
 ### 后续：
 
@@ -243,4 +253,4 @@ gw_input_title_signtx_usdt ="Pagar taxa de manuseio do USDT:%ld/%@"; /**"支付 
 
 - 翻译渠道：
 
-因 google 翻译需要外网，后续将增加有道翻译
+优化有道翻译

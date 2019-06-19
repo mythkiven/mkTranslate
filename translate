@@ -10,13 +10,14 @@ def main():
     parser.add_argument('-p','--path',action='store',dest='file_path', help='The path of the file to be translated. (Default: ./)')
     parser.add_argument('-d','--dest',action='store',dest='dest_language',default='en',help='The destination language you want to translate. (Default: en)')
     parser.add_argument('-s','--sourcelanguage',action='store',dest='sourcelanguage',help='Set the original file language, first use "i18ns.com" translation')
+    parser.add_argument('-c','--channel',action='store',dest='channel',default='google',help='By default, google translation can be used to specify other translation channels.([-c "google"] or [-c "youdao"])')
     args = parser.parse_args()
     if(args.file_path):
-        mkTranslator().translate_doc(filepath=args.file_path, destination=args.dest_language,language=args.sourcelanguage)
+        mkTranslator().translate_doc(filepath=args.file_path, destination=args.dest_language,sourcelanguage=args.sourcelanguage,channel=args.channel)
     elif(args.text):
-        mkTranslator().translate_text(text=args.text, destination=args.dest_language,language=args.sourcelanguage)
+        mkTranslator().translate_text(text=args.text, destination=args.dest_language,sourcelanguage=args.sourcelanguage,channel=args.channel)
     else:
-        print('')
+        print('-p 指定要翻译文档的路径 -t 指定要翻译的文本 -d 目标语言(缺省"en") -c 指定翻译渠道:[-c "google"] or [-c "youdao"] -s 原始语言，使用有道翻译时最好设置否则翻译的会不太准')
 if __name__ == '__main__':
     main()
 

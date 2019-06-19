@@ -1,3 +1,0 @@
-Đầu vào không nhất quán hai lần
-Không thể tạo ví. Vui lòng thử lại sau. Xin lưu ý rằng mã PIN, mật khẩu ghi nhớ và ghi nhớ được ghi lại.
-Vui lòng xác nhận [Bạn có muốn xóa ví không? Tất cả dữ liệu sẽ bị xóa] và được chọn để xác nhận hoặc hủy trên thiết bị.

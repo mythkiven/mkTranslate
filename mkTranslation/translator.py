@@ -6,6 +6,7 @@ import json
 import string
 import requests
 from mkTranslation.translate_google import mkGoogleTranslator
+from mkTranslation.translate_youdao import mkYouDaoTranslator
 sys.path.append("..")
 
 class mkTranslator(object):
@@ -48,7 +49,7 @@ class mkTranslator(object):
                         return x[dest][0]+''
         return 'null'
 
-    def translate(self,word,destination,language):
+    def translate(self,word,destination,language,channel):
         if(len(word)==0):
             return 'null'
         try:
@@ -57,10 +58,13 @@ class mkTranslator(object):
                 return tx
         except Exception as e:
             print('')
-        return mkGoogleTranslator().translate(word, dest=destination).text
+        if(channel == 'google'):
+            return mkGoogleTranslator().translate(word, dest=destination).text
+        else:
+            return mkYouDaoTranslator().translate(word,destination,language)
+        
 
     def fix_tx(self,txt):
-        print(txt)
         if(txt.find('% ld')!=-1 or txt.find('% @')!=-1):
             tsing = re.search(r'%\s*(@|ld)\s*/\s*%\s*(ld|@)',txt)
             if(tsing):
@@ -68,7 +72,7 @@ class mkTranslator(object):
                 txt = txt.replace(tsing,tsing.replace(' ',''))
         return txt
 
-    def write_tx(self,oldfile,newfile,reg,creg,des,lan):
+    def write_tx(self,oldfile,newfile,reg,creg,des,lan,channel):
         f = open(oldfile)
         line = f.readline()
         txd = ''
@@ -81,13 +85,13 @@ class mkTranslator(object):
             print('original:'+originLine)
             line = re.findall(reg,line)
             if(len(line) and line[0]):
-                txc = self.translate(line[0],des,lan)
+                txc = self.translate(line[0],des,lan,channel)
                 if(len(txc)):
                     originLine = re.sub(reg,creg.replace('content',txc), originLine)
                 else:
                     print('translate fail:' + line)
             elif(reg==creg==r'text'):
-                originLine = self.translate(originLine,des,lan)
+                originLine = self.translate(originLine,des,lan,channel)
             else:
                 print('skip: '+originLine)
             originLine = self.fix_tx(originLine)
@@ -98,37 +102,45 @@ class mkTranslator(object):
         f = open(newfile,'w+')
         f.write(txd)
         f.close()
-    def translate_text(self,text, destination,language):
-        print(mkGoogleTranslator().translate_text(text, dest=destination).text)
-    def translate_doc(self,filepath, destination,language):
+
+    def translate_text(self,text, destination,sourcelanguage,channel):
+        channel = channel if channel else 'google'
+        if(channel == 'google'):
+            print(mkGoogleTranslator().translate_text(text, dest=destination).text)
+        else:
+            print(mkYouDaoTranslator().translate(text,destination,sourcelanguage))
+
+    def translate_doc(self,filepath, destination,sourcelanguage,channel):
+        channel = channel if channel else 'google'
+
         filepath = self.get_file(filepath)
         pathArray = filepath.split('/')
         oldFileName = pathArray[len(pathArray)-1]
         fileType = oldFileName.split('.')[len(oldFileName.split('.'))-1]
         currentPath =  filepath.replace('/' + oldFileName,'') if len(pathArray)>2 else  os.path.abspath('.')
-        newFile = os.path.join(currentPath, 'translate_'+destination+'_'+oldFileName)
+        newFile = os.path.join(currentPath, 'translate_'+destination+'_by_'+channel+'_'+oldFileName)
         txd = ''
         print('translating..')
 
         # text
         if(fileType.lower() == 'text' or  fileType.lower() == 'txt'):
-            self.write_tx(filepath,newFile,r"text",r"text",destination,language)
+            self.write_tx(filepath,newFile,r"text",r"text",destination,sourcelanguage,channel)
             print('translation completed')
 
         # oc:xx.string
         elif(fileType.lower() == 'strings'):
-            self.write_tx(filepath,newFile,r"=\s*\"(.+?)\"\s*;",'="'+'content'+'";',destination,language)
+            self.write_tx(filepath,newFile,r"=\s*\"(.+?)\"\s*;",'="'+'content'+'";',destination,sourcelanguage,channel)
             print('translation completed')
         # java:xx.xml
         elif(fileType.lower() == 'xml'):
-            self.write_tx(filepath,newFile,r">\s*(.+?)\s*</string>",'>'+'content'+'</string>',destination,language)
+            self.write_tx(filepath,newFile,r">\s*(.+?)\s*</string>",'>'+'content'+'</string>',destination,sourcelanguage,channel)
             print('translation completed')
         else:
             f = open(filepath)
             line = f.readline()
             while line:
                 if(len(line)):
-                    txd += self.translate(line,destination,language)+'\n'
+                    txd += self.translate(line,destination,sourcelanguage,channel)+'\n'
                 line = f.readline()
             f.close()
             f = open(newFile,'w+')

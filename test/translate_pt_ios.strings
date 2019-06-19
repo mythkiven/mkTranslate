@@ -1,9 +1,0 @@
-common_btn_sdk_pin_error ="Erro";
-common_btn_sdk_pin_error ="O código PIN é inserido incorretamente, por favor, verifique a entrada!"; /**"PIN碼輸入錯誤，請檢查輸入！"*/
-common_btn_sdk_cys_error ="A senha mnemônica ou mnemônica está errada, por favor verifique a entrada!"; /**"助記詞或助記詞密碼錯誤，請檢查輸入！"*/
-Home_alertview_pin ="Por favor, digite seu PIN no seu dispositivo ..."; /**"請在設備上輸入PIN碼..."*/
-Home_alertview_cpinconnect ="Conectando está sendo estabelecido:"; /**"正在建立連接.."*/
-Home_alertview_cpinunconnect ="Desconectado"; /**"已斷開連接"*/
-/** ********************************************   */
-gw_input_title_signtx ="%@/%@ transfer"; /**"%@转账"*/
-gw_input_title_signtx_usdt ="Pagar taxa de manuseio do USDT:%ld/%@"; /**"支付USDT手續費:%ld/%@"*/
