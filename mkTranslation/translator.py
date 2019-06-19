@@ -5,7 +5,7 @@ import sys
 import json
 import string
 import requests
-from mkTranslation.trans_google import mkGoogleTranslator
+from mkTranslation.translate_google import mkGoogleTranslator
 sys.path.append("..")
 
 class mkTranslator(object):

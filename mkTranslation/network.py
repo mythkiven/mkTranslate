@@ -10,13 +10,8 @@ from mkTranslation.utils import rshift,PY3,unicode
 BASE = 'https://translate.google.com'
 TRANSLATE = 'https://{host}/translate_a/single'
 
-
 class TimeoutAdapter(HTTPAdapter):
-    """HTTP adapter that adds timeout to each query."""
     def __init__(self, timeout=None, *args, **kwargs):
-        """HTTP adapter that adds timeout to each query.
-        :param timeout: Timeout that will be added to each query
-        """
         self.timeout = timeout
         super(TimeoutAdapter, self).__init__(*args, **kwargs)
 
@@ -35,9 +30,6 @@ class TokenAcquirer(object):
         self.host = host if 'http' in host else 'https://' + host
 
     def _update(self):
-        """update tkk
-        """
-        # we don't need to update the base TKK value when it is still valid
         now = math.floor(int(time.time() * 1000) / 3600000.0)
         if self.tkk and int(self.tkk.split('.')[0]) == now:
             return
@@ -49,12 +41,10 @@ class TokenAcquirer(object):
             self.tkk = raw_tkk.group(1)
             return
 
-        # this will be the same as python code after stripping out a reserved word 'var'
         code = unicode(self.RE_TKK.search(r.text).group(1)).replace('var ', '')
-        # unescape special ascii characters such like a \x3d(=)
-        if PY3:  # pragma: no cover
+        if PY3:
             code = code.encode().decode('unicode-escape')
-        else:  # pragma: no cover
+        else:
             code = code.decode('string_escape')
 
         if code:
@@ -68,18 +58,14 @@ class TokenAcquirer(object):
                     if name in keys:
                         if isinstance(node.value, ast.Num):
                             keys[name] = node.value.n
-                        # the value can sometimes be negative
                         elif isinstance(node.value, ast.UnaryOp) and \
                                 isinstance(node.value.op, ast.USub):
                             keys[name] = -node.value.operand.n
                 elif isinstance(node, ast.Return):
-                    # parameters should be set after this point
                     visit_return = True
                 elif visit_return and isinstance(node, ast.Num):
                     n = node.n
                 elif visit_return and n > 0:
-                    # the default operator is '+' but implement some more for
-                    # all possible scenarios
                     if isinstance(node, ast.Add):
                         pass
                     elif isinstance(node, ast.Sub):
@@ -90,7 +76,6 @@ class TokenAcquirer(object):
                         operator = '**'
                     elif isinstance(node, ast.BitXor):
                         operator = '^'
-            # a safety way to avoid Exceptions
             clause = compile('{1}{0}{2}'.format(
                 operator, keys['a'], keys['b']), '', 'eval')
             value = eval(clause, dict(__builtin__={}))
@@ -115,13 +100,11 @@ class TokenAcquirer(object):
 
     def acquire(self, text):
         a = []
-        # Convert text to ints
         for i in text:
             val = ord(i)
             if val < 0x10000:
                 a += [val]
             else:
-                # Python doesn't natively use Unicode surrogates, so account for those
                 a += [
                     math.floor((val - 0x10000)/0x400 + 0xD800),
                     math.floor((val - 0x10000)%0x400 + 0xDC00)
@@ -131,31 +114,27 @@ class TokenAcquirer(object):
         d = b.split('.')
         b = int(d[0]) if len(d) > 1 else 0
 
-        # assume e means char code array
         e = []
         g = 0
         size = len(text)
         while g < size:
             l = a[g]
-            # just append if l is less than 128(ascii: DEL)
             if l < 128:
                 e.append(l)
-            # append calculated value if l is less than 2048
             else:
                 if l < 2048:
                     e.append(l >> 6 | 192)
                 else:
-                    # append calculated value if l matches special condition
                     if (l & 64512) == 55296 and g + 1 < size and \
                             a[g + 1] & 64512 == 56320:
                         g += 1
-                        l = 65536 + ((l & 1023) << 10) + (a[g] & 1023) # This bracket is important
+                        l = 65536 + ((l & 1023) << 10) + (a[g] & 1023)
                         e.append(l >> 18 | 240)
                         e.append(l >> 12 & 63 | 128)
                     else:
                         e.append(l >> 12 | 224)
                     e.append(l >> 6 & 63 | 128)
-                e.append(l & 63 | 128)   
+                e.append(l & 63 | 128)
             g += 1
         a = b
         for i, value in enumerate(e):
@@ -163,9 +142,9 @@ class TokenAcquirer(object):
             a = self._xr(a, '+-a^+6')
         a = self._xr(a, '+-3^+b+-f')
         a ^= int(d[1]) if len(d) > 1 else 0
-        if a < 0:   
+        if a < 0:
             a = (a & 2147483647) + 2147483648
-        a %= 1000000  # int(1E6)
+        a %= 1000000
 
         return '{}.{}'.format(a, a ^ b)
 

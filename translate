@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import argparse
 import sys
-from mkTranslation.translator import mkTranslation
+from mkTranslation.translator import mkTranslator
 
 def main():
     parser = argparse.ArgumentParser(description='Command line tools translated using Google and i18ns.com')
@@ -11,7 +11,7 @@ def main():
     parser.add_argument('-d','--dest',action='store',dest='dest_language',default='en',help='The destination language you want to translate. (Default: en)')
     parser.add_argument('-l','--language',action='store',dest='current_language',help='Set the original file language, first use i18ns.com translation')
     args = parser.parse_args()
-    mkTranslation().translate_doc(filepath=args.file_path, destination=args.dest_language,language=args.current_language)
+    mkTranslator().translate_doc(filepath=args.file_path, destination=args.dest_language,language=args.current_language)
 
 if __name__ == '__main__':
     main()
