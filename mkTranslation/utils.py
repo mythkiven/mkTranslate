@@ -1,7 +1,19 @@
-"""A conversion module for mkTranslation"""
+# -*- coding: utf-8 -*-
 from __future__ import print_function
-import re
 import json
+import ast
+import sys
+import requests
+
+
+
+try:  # pragma: nocover
+    from urllib.parse import quote
+except:  # pragma: nocover
+    from urllib import quote
+
+PY3 = sys.version_info > (3, )
+unicode = str if PY3 else unicode
 
 
 def build_params(query, src, dest, token):

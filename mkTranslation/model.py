@@ -1,3 +1,9 @@
+# -*- coding: utf-8 -*-
+
+
+"""
+model
+"""
 class Translated(object):
     """Translate result object
 
@@ -24,7 +30,9 @@ class Translated(object):
             src=self.src, dest=self.dest, text=self.text, pronunciation=self.pronunciation,
             extra_data='"' + repr(self.extra_data)[:10] + '..."')
 
-
+"""
+model
+"""
 class Detected(object):
     """Language detection result object
 

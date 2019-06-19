@@ -7,12 +7,11 @@ You can translate text using this module.
 import requests
 import random
 
-from mkTranslation import urls, utils
-from mkTranslation.adapters import TimeoutAdapter
-from mkTranslation.compat import PY3
-from mkTranslation.gtoken import TokenAcquirer
+from mkTranslation import utils,network
+from mkTranslation.network import TimeoutAdapter,TokenAcquirer
+from mkTranslation.utils import PY3
 from mkTranslation.constants import DEFAULT_USER_AGENT, LANGCODES, LANGUAGES, SPECIAL_CASES
-from mkTranslation.models import Translated, Detected
+from mkTranslation.model import Translated, Detected
 
 
 EXCLUDES = ('en', 'ca', 'fr')
@@ -75,7 +74,7 @@ class mkTranslator(object):
         token = self.token_acquirer.do(text)
         params = utils.build_params(query=text, src=src, dest=dest,
                                     token=token)
-        url = urls.TRANSLATE.format(host=self._pick_service_url())
+        url = network.TRANSLATE.format(host=self._pick_service_url())
         r = self.session.get(url, params=params)
         data = 'cannot tx !!!'
         if(r.text):
@@ -105,44 +104,6 @@ class mkTranslator(object):
         return extra
 
     def translate(self, text, dest='en', src='auto'):
-        """Translate text from source language to destination language
-
-        :param text: The source text(s) to be translated. Batch translation is supported via sequence input.
-        :type text: UTF-8 :class:`str`; :class:`unicode`; string sequence (list, tuple, iterator, generator)
-
-        :param dest: The language to translate the source text into.
-                     The value should be one of the language codes listed in :const:`mkTranslation.LANGUAGES`
-                     or one of the language names listed in :const:`mkTranslation.LANGCODES`.
-        :param dest: :class:`str`; :class:`unicode`
-
-        :param src: The language of the source text.
-                    The value should be one of the language codes listed in :const:`mkTranslation.LANGUAGES`
-                    or one of the language names listed in :const:`mkTranslation.LANGCODES`.
-                    If a language is not specified,
-                    the system will attempt to identify the source language automatically.
-        :param src: :class:`str`; :class:`unicode`
-
-        :rtype: Translated
-        :rtype: :class:`list` (when a list is passed)
-
-        Basic usage:
-            >>> from mkTranslation import mkTranslator
-            >>> translator = mkTranslator()
-            >>> translator.translate('안녕하세요.')
-            <Translated src=ko dest=en text=Good evening. pronunciation=Good evening.>
-            >>> translator.translate('안녕하세요.', dest='ja')
-            <Translated src=ko dest=ja text=こんにちは。 pronunciation=Kon'nichiwa.>
-            >>> translator.translate('veritas lux mea', src='la')
-            <Translated src=la dest=en text=The truth is my light pronunciation=The truth is my light>
-
-        Advanced usage:
-            >>> translations = translator.translate(['The quick brown fox', 'jumps over', 'the lazy dog'], dest='ko')
-            >>> for translation in translations:
-            ...    print(translation.origin, ' -> ', translation.text)
-            The quick brown fox  ->  빠른 갈색 여우
-            jumps over  ->  이상 점프
-            the lazy dog  ->  게으른 개
-        """
         dest = dest.lower().split('_', 1)[0]
         src = src.lower().split('_', 1)[0]
 
@@ -210,36 +171,6 @@ class mkTranslator(object):
         return result
 
     def detect(self, text):
-        """Detect language of the input text
-
-        :param text: The source text(s) whose language you want to identify.
-                     Batch detection is supported via sequence input.
-        :type text: UTF-8 :class:`str`; :class:`unicode`; string sequence (list, tuple, iterator, generator)
-
-        :rtype: Detected
-        :rtype: :class:`list` (when a list is passed)
-
-        Basic usage:
-            >>> from mkTranslation import mkTranslator
-            >>> translator = mkTranslator()
-            >>> translator.detect('이 문장은 한글로 쓰여졌습니다.')
-            <Detected lang=ko confidence=0.27041003>
-            >>> translator.detect('この文章は日本語で書かれました。')
-            <Detected lang=ja confidence=0.64889508>
-            >>> translator.detect('This sentence is written in English.')
-            <Detected lang=en confidence=0.22348526>
-            >>> translator.detect('Tiu frazo estas skribita en Esperanto.')
-            <Detected lang=eo confidence=0.10538048>
-
-        Advanced usage:
-            >>> langs = translator.detect(['한국어', '日本語', 'English', 'le français'])
-            >>> for lang in langs:
-            ...    print(lang.lang, lang.confidence)
-            ko 1
-            ja 0.92929292
-            en 0.96954316
-            fr 0.043500196
-        """
         if isinstance(text, list):
             result = []
             for item in text:

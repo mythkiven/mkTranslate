@@ -3,11 +3,12 @@ import os
 import re
 import sys
 import json
+import string
 import requests
 from mkTranslation.client import mkTranslator
 sys.path.append("..")
 
-class mkTranslateDoc(object):
+class mkTranslation(object):
 
     def get_file(self,path):
         if(not os.path.exists(path)):
@@ -25,14 +26,12 @@ class mkTranslateDoc(object):
         body = json.dumps({"query": {"simple_query_string":{"query":word,"fields":[tlanguage],"minimum_should_match": "100%","default_operator": "AND","analyzer": "smartcn"}}}) 
         response = requests.post(url=uri,data=body,headers=headers,timeout=120)
         if response.status_code != 200 :
-            # print('使用 i18ns 翻译: '+word+' 失败！，改用google翻译')
             return 'null'
         txd = []
         try:
             tx=json.loads(response.text,encoding="UTF-8")
             txd=tx['hits']['hits'][0]['_source']['translations']
         except Exception as e:
-            # print('使用 i18ns 翻译: '+word+' 失败！，改用google翻译')
             return 'null'
         if(len(txd)>1):
             isExist = False
@@ -58,8 +57,16 @@ class mkTranslateDoc(object):
                 return tx
         except Exception as e:
             print('')
-
         return mkTranslator().translate(word, dest=destination).text
+
+    def fix_tx(self,txt):
+        print(txt)
+        if(txt.find('% ld')!=-1 or txt.find('% @')!=-1):
+            tsing = re.search(r'%\s*(@|ld)\s*/\s*%\s*(ld|@)',txt)
+            if(tsing):
+                tsing = tsing.group(0)
+                txt = txt.replace(tsing,tsing.replace(' ',''))
+        return txt
 
     def write_tx(self,oldfile,newfile,reg,creg,des,lan):
         f = open(oldfile)
@@ -67,8 +74,11 @@ class mkTranslateDoc(object):
         txd = ''
         while line:
             line = line.replace('\n','')
+            if(len(line)==0):
+                line = f.readline()
+                continue
             originLine = line
-            # print('original:'+originLine)
+            print('original:'+originLine)
             line = re.findall(reg,line)
             if(len(line) and line[0]):
                 txc = self.translate(line[0],des,lan)
@@ -76,13 +86,16 @@ class mkTranslateDoc(object):
                     originLine = re.sub(reg,creg.replace('content',txc), originLine)
                 else:
                     print('translate fail:' + line)
-                # print('translate:'+originLine)
+            elif(reg==creg==r'text'):
+                originLine = self.translate(originLine,des,lan)
             else:
                 print('skip: '+originLine)
+            originLine = self.fix_tx(originLine)
+            print('translated:'+originLine)
             txd += originLine + '\n'
-            # print('***************')
+            print('-----')
             line = f.readline()
-        f = open(newfile,'a')
+        f = open(newfile,'w+')
         f.write(txd)
         f.close()
 
@@ -94,20 +107,11 @@ class mkTranslateDoc(object):
         currentPath =  filepath.replace('/' + oldFileName,'') if len(pathArray)>2 else  os.path.abspath('.')
         newFile = os.path.join(currentPath, 'translate_'+destination+'_'+oldFileName)
         txd = ''
-        print('file type:'+fileType)
+        print('translating..')
 
         # text
         if(fileType.lower() == 'text' or  fileType.lower() == 'txt'):
-            f = open(filepath)
-            line = f.readline()
-            while line:
-                if(len(line)):
-                    txd += self.translate(line,destination,language)+'\n'
-                line = f.readline()
-            f.close()
-            f = open(newFile,'a')
-            f.write(txd)
-            f.close()
+            self.write_tx(filepath,newFile,r"text",r"text",destination,language)
             print('translation completed')
 
         # oc:xx.string
@@ -126,7 +130,7 @@ class mkTranslateDoc(object):
                     txd += self.translate(line,destination,language)+'\n'
                 line = f.readline()
             f.close()
-            f = open(newFile,'a')
+            f = open(newFile,'w+')
             f.write(txd)
             f.close()
             print('translation completed')

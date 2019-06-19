@@ -7,14 +7,6 @@
     <string name="album_text">相册</string>
     <string name="qr_code_text">二维码</string>
     <string name="scan_qr_code_from_photo_wrong">没有找到二维码</string>
-    <string name="scan_tips">扫一扫，向我转币</string>
-    <string name="waiting">请稍侯...</string>
-    <string name="copied">已复制</string>
-    <string name="title_receipt">收款</string>
-    <string name="paste">粘贴</string>
-    <string name="no_paste">无可粘贴内容</string>
-    <string name="value_text">数量</string>
-    <string name="send">发送</string>
     <string name="most_withdraw">最多可用:</string>
     <string name="all_text">全部</string>
     <string name="withdraw_chain_status"><xliff:g>%s</xliff:g></string>
@@ -22,6 +14,4 @@
     <string name="system_setting">系统设置</string>
     <string name="payfor_miners">支付矿工费</string>
     <string name="high_grade">高级设置</string>
-    <string name="about_super_seed">关于超级种子</string>
-    <string name="is_usd_super_seed">是否已启用超级种子功能(专利技术)</string>
 </resources>

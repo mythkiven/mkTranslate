@@ -1,16 +1,32 @@
 # -*- coding: utf-8 -*-
-import ast
-import math
-import re
+
 import time
+import re
+import math
+import sys
+from requests.adapters import HTTPAdapter
+from mkTranslation.utils import rshift,PY3,unicode
 
-import requests
+
+"""
+URL
+"""
+BASE = 'https://translate.google.com'
+TRANSLATE = 'https://{host}/translate_a/single'
 
 
-from mkTranslation.compat import PY3
-from mkTranslation.compat import unicode
-from mkTranslation.utils import rshift
+class TimeoutAdapter(HTTPAdapter):
+    """HTTP adapter that adds timeout to each query."""
+    def __init__(self, timeout=None, *args, **kwargs):
+        """HTTP adapter that adds timeout to each query.
+        :param timeout: Timeout that will be added to each query
+        """
+        self.timeout = timeout
+        super(TimeoutAdapter, self).__init__(*args, **kwargs)
 
+    def send(self, *args, **kwargs):
+        kwargs['timeout'] = self.timeout
+        return super(TimeoutAdapter, self).send(*args, **kwargs)
 
 class TokenAcquirer(object):
     """Google Translate API token generator

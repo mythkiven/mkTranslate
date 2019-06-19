@@ -1,0 +1,3 @@
+Entrada inconsistente duas vezes
+Não foi possível criar carteira. Tente novamente mais tarde. Por favor, note que o código PIN, a senha mnemônica e o mnemônico são registrados.
+Por favor confirme [Deseja apagar a carteira? Todos os dados serão apagados] e selecionados para confirmar ou cancelar no dispositivo.
