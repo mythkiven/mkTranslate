@@ -243,7 +243,7 @@ gw_input_title_signtx_usdt ="Pagar taxa de manuseio do USDT:%ld/%@"; /**"支付 
 
 - V1.2.3 增加快速翻译 `$translate  'mkTranslate 支持多种语言的互译'`
 - V1.2.0 增加有道翻译，
-有道会对ip封锁，所以使用了3种翻译通道，其中api翻译是不得已才会调用的，因为**api 接口仅支持中英互译**。有还没注册apikey，目前使用的apikey源于:[api key](http://fengmm521.lofter.com/post/2a9e99_7475571)。虽然有三种翻译通道，但是还可能翻译不出来，还需要优化。
+有道会对ip封锁，所以使用了3种翻译通道，其中api翻译是不得已才会调用的，因为**api 接口仅支持中英互译**。暂未注册apikey，目前使用的apikey源于:[api key](http://fengmm521.lofter.com/post/2a9e99_7475571)。虽然有三种翻译通道，但是还可能翻译不出来，还需要优化。
 - V1.1.3 增加命令行直接翻译文本
 
 
@@ -252,12 +252,11 @@ gw_input_title_signtx_usdt ="Pagar taxa de manuseio do USDT:%ld/%@"; /**"支付 
 
 - 修复：
 
-已经添加了一些简单的修复工作：
+目前已经添加了一些简单的修复工作：
 
 针对 `"user_notify_type_word_input_index" = "第 %ld/%@ 个单词";`  这种词条，谷歌翻译葡萄牙后 `% ld /% @ palavras`，
 脚本会自动删减空格：`"user_notify_type_word_input_index" = "%ld/%@ palavras";`
 
-后续将会增加更多修复
 
 - 有道翻译：
 
