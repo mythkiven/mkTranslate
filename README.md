@@ -1,15 +1,15 @@
-### mkTranslate
+# mkTranslate(V.1.2)
 
-##### 安装：
+### 安装：
 
 `pip install mkTranslation`
 
-##### 支持的文件和语种:
+### 支持的文件和语种:
 
-**支持 txt、iOS(.strings) 和 Android(.xml) 的配置文件**
+- 支持 txt、iOS(.strings) 和 Android(.xml) 的配置文件
 
-**支持翻译的语言**
-支持如下任意两个语种互相翻译
+- 支持翻译的语言
+支持如下任意两个语种互译
 ```
 'af': 'afrikaans',
     'sq': 'albanian',
@@ -119,18 +119,18 @@
     'he': 'Hebrew'
 ```
 
-##### 使用：
+### 使用：
 
 ```
 translate -p ./ios.strings -d 'pt'
 translate -p ./android.xml -d 'pt'
 translate -p ./test.txt -d 'pt'
-然后生成翻译好的文件  translate_pt_android.xml translate_pt_ios.strings translate_pt_test.txt
+自动在原始文件目录生成翻译后的文件  translate_pt_android.xml translate_pt_ios.strings translate_pt_test.txt
 ```
 更多用法 参见 `translate -h`
 
 
-##### 翻译展示
+### 翻译展示
 
 原始 .strings 文件
 
@@ -157,7 +157,7 @@ Home_alertview_cpinconnect ="Conectando está sendo estabelecido:"; /**"正在�
 Home_alertview_cpinunconnect ="Desconectado"; /**"已斷開連接"*/
 /** ********************************************   */
 gw_input_title_signtx ="%@/%@ transfer"; /**"%@转账"*/
-gw_input_title_signtx_usdt ="Pagar taxa de manuseio do USDT:%ld /%@"; /**"支付 USDT 手續費:%ld/%@"*/
+gw_input_title_signtx_usdt ="Pagar taxa de manuseio do USDT:%ld/%@"; /**"支付 USDT 手續費:%ld/%@"*/
 ```
 
 原始 .xml 文件
@@ -196,7 +196,7 @@ gw_input_title_signtx_usdt ="Pagar taxa de manuseio do USDT:%ld /%@"; /**"支付
     <string name="scan_qr_code_from_photo_wrong">Nenhum código QR encontrado</string>
     <string name="most_withdraw">Mais disponível:</string>
     <string name="all_text">Todos</string>
-    <string name="withdraw_chain_status"><xliff: g>% s </ xliff: g></string>
+    <string name="withdraw_chain_status"><xliff: g>%s</ xliff: g></string>
     <string name="create_wallet_tips">Antes de iniciar as seguintes operações, certifique-se de estar em um ambiente seguro, sem câmeras, sem câmeras e com uma caneta e seu cartão de memória mnemônico ou um congestionamento em branco.</string>
     <string name="system_setting">Configurações do sistema</string>
     <string name="payfor_miners">Pagar pelos mineiros</string>
@@ -208,15 +208,20 @@ gw_input_title_signtx_usdt ="Pagar taxa de manuseio do USDT:%ld /%@"; /**"支付
 ### 后续：
 
 - 修复：
+
 已经添加了一些简单的修复工作：
+
 针对 `"user_notify_type_word_input_index" = "第 %ld/%@ 个单词";`  这种词条，谷歌翻译葡萄牙后 `% ld /% @ palavras`，
 脚本会自动删减空格：`"user_notify_type_word_input_index" = "%ld/%@ palavras";`
+
 后续将会增加更多修复
 
 - 翻译渠道：
+
 因 google 翻译需要外网，下一版将增加有道翻译
 
 **说明:**
+
 前两天项目中遇到需要紧急增加对葡萄牙支持的情况，两端都有大量需要翻译的配置文件，手动翻译太耗时间，于是诞生了这个小工具。
-google 翻译的 api 默认接口是付费的，也能添加信用卡免费试用一段时间，太麻烦就没折腾。抓包分析 google 网页翻译，发现如果能生成 token，就能通过爬虫来翻译。
+google 翻译的 api 默认接口是付费的，也能添加信用卡免费试用一段时间，有些麻烦就没折腾。抓包分析 google 网页翻译，发现如果能生成 token，就能通过爬虫来翻译。
 网上找到一份 get token 的代码，便有了这个小工具。
