@@ -219,3 +219,9 @@ gw_input_title_signtx_usdt ="Pagar taxa de manuseio do USDT:%ld/%@"; /**"支付 
 - 翻译渠道：
 
 因 google 翻译需要外网，下一版将增加有道翻译
+
+**说明:**
+
+前两天项目中遇到需要紧急增加对葡萄牙支持的情况，两端都有大量需要翻译的配置文件，手动翻译太耗时间，于是诞生了这个小工具。
+google 翻译的 api 默认接口是付费的，也能添加信用卡免费试用一段时间，有些麻烦就没折腾。抓包分析 google 网页翻译，发现如果能生成 token，就能通过爬虫来翻译。
+网上找到一个方案[getToken](https://github.com/ssut/py-googletrans/blob/master/googletrans/gtoken.py)，便有了这个小工具。
