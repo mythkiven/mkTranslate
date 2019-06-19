@@ -130,7 +130,7 @@ translate -p ./test.txt -d 'pt'
 更多用法 参见 `translate -h`
 
 
-### 翻译展示
+### demo
 
 原始 .strings 文件
 
