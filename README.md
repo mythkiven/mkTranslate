@@ -1,4 +1,4 @@
-# mkTranslate(V1.1.3)
+# mkTranslate(V1.2.0)
 
 ### 安装：
 
@@ -17,21 +17,21 @@
 - 翻译文档
 
 ```
-translate -p ./ios.strings -d 'pt'
-translate -p ./android.xml -d 'pt'
-translate -p ./test.txt -d 'pt' -c 'youdao' -s 'zh'
+translate -p ./ios.strings -d 'pt'       # 默认使用 google 翻译
+translate -p ./android.xml -d 'pt'       # 默认使用 google 翻译
+translate -p ./test.txt -d 'pt' -c 'youdao' -s 'zh'   #使用有道翻译
 自动在原始文件目录生成翻译后的文件  translate_pt_android.xml translate_pt_ios.strings translate_pt_test.txt
 ```
 
 - 翻译文本
 
 ```
-$ py translate -t '一篇仅仅12页的白皮书，让Facebook从社交巨头一跃成为了人们口中的“互联网美联储”，发布的加密货币Libra也被网友戏称为“世界的Q币”' -d 'pt'
-# 指定目标语言是葡萄牙语
-Um white paper de 12 páginas fez com que o Facebook saltasse do gigante social para o "Fed da Internet" na boca das pessoas.A Libra criptografada lançada pelos internautas também foi apelidada pelos internautas como "a moeda Q do mundo".
+$translate -t 'Facebook發幣，是偉大征途還是飛蛾撲火？' -d 'pt'
+# 默认使用谷歌翻译(目标语言是葡萄牙语)
+Moeda do Facebook, é uma ótima jornada ou uma mariposa?
 
-$py translate -t 'Facebook發幣，是偉大征途還是飛蛾撲火？'
-# 默认目标语言是'en'
+$translate -t 'Facebook發幣，是偉大征途還是飛蛾撲火？' -d 'ja' -s 'zh'
+# 使用有道翻译(目标语言是日语)
 Facebook currency, is it a great journey or a moth?
 ```
 
