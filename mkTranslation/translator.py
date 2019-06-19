@@ -5,10 +5,10 @@ import sys
 import json
 import string
 import requests
-from mkTranslation.client import mkTranslator
+from mkTranslation.trans_google import mkGoogleTranslator
 sys.path.append("..")
 
-class mkTranslation(object):
+class mkTranslator(object):
 
     def get_file(self,path):
         if(not os.path.exists(path)):
@@ -57,7 +57,7 @@ class mkTranslation(object):
                 return tx
         except Exception as e:
             print('')
-        return mkTranslator().translate(word, dest=destination).text
+        return mkGoogleTranslator().translate(word, dest=destination).text
 
     def fix_tx(self,txt):
         print(txt)

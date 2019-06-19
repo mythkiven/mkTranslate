@@ -1,18 +1,6 @@
 # -*- coding: utf-8 -*-
 
-
-"""
-model
-"""
 class Translated(object):
-    """Translate result object
-
-    :param src: source langauge (default: auto)
-    :param dest: destination language (default: en)
-    :param origin: original text
-    :param text: translated text
-    :param pronunciation: pronunciation
-    """
     def __init__(self, src, dest, origin, text, pronunciation, extra_data=None):
         self.src = src
         self.dest = dest
@@ -30,15 +18,7 @@ class Translated(object):
             src=self.src, dest=self.dest, text=self.text, pronunciation=self.pronunciation,
             extra_data='"' + repr(self.extra_data)[:10] + '..."')
 
-"""
-model
-"""
 class Detected(object):
-    """Language detection result object
-
-    :param lang: detected language
-    :param confidence: the confidence of detection result (0.00 to 1.00)
-    """
     def __init__(self, lang, confidence):
         self.lang = lang
         self.confidence = confidence

@@ -1,12 +1,7 @@
 # -*- coding: utf-8 -*-
-"""
-A Translation module.
 
-You can translate text using this module.
-"""
 import requests
 import random
-
 from mkTranslation import utils,network
 from mkTranslation.network import TimeoutAdapter,TokenAcquirer
 from mkTranslation.utils import PY3
@@ -17,28 +12,7 @@ from mkTranslation.model import Translated, Detected
 EXCLUDES = ('en', 'ca', 'fr')
 
 
-class mkTranslator(object):
-    """Google Translate ajax API implementation class
-
-    You have to create an instance of Translator to use this API
-
-    :param service_urls: google translate url list. URLs will be used randomly.
-                         For example ``['translate.google.com', 'translate.google.co.kr']``
-    :type service_urls: a sequence of strings
-
-    :param user_agent: the User-Agent header to send when making requests.
-    :type user_agent: :class:`str`
-
-    :param proxies: proxies configuration. 
-                    Dictionary mapping protocol or protocol and host to the URL of the proxy 
-                    For example ``{'http': 'foo.bar:3128', 'http://host.name': 'foo.bar:4012'}``
-    :type proxies: dictionary
-
-    :param timeout: Definition of timeout for Requests library.
-                    Will be used by every request.
-    :type timeout: number or a double of numbers
-    """
-
+class mkGoogleTranslator(object):
     def __init__(self, service_urls=None, user_agent=DEFAULT_USER_AGENT,
                  proxies=None, timeout=None):
 
@@ -56,10 +30,10 @@ class mkTranslator(object):
         self.token_acquirer = TokenAcquirer(session=self.session, host=self.service_urls[0])
 
         # Use HTTP2 Adapter if hyper is installed
-        try:  # pragma: nocover
+        try:
             from hyper.contrib import HTTP20Adapter
             self.session.mount(urls.BASE, HTTP20Adapter())
-        except ImportError:  # pragma: nocover
+        except ImportError:
             pass
 
     def _pick_service_url(self):
@@ -68,7 +42,7 @@ class mkTranslator(object):
         return random.choice(self.service_urls)
 
     def _translate(self, text, dest, src):
-        if not PY3 and isinstance(text, str):  # pragma: nocover
+        if not PY3 and isinstance(text, str):
             text = text.decode('utf-8')
 
         token = self.token_acquirer.do(text)
@@ -135,28 +109,27 @@ class mkTranslator(object):
 
         # this code will be updated when the format is changed.
         translated = ''.join([d[0] if d[0] else '' for d in data[0]])
-
         extra_data = self._parse_extra_data(data)
 
         # actual source language that will be recognized by Google Translator when the
         # src passed is equal to auto.
         try:
             src = data[2]
-        except Exception:  # pragma: nocover
+        except Exception:
             pass
 
         pron = origin
         try:
             pron = data[0][1][-2]
-        except Exception:  # pragma: nocover
+        except Exception:
             pass
-        if not PY3 and isinstance(pron, unicode) and isinstance(origin, str):  # pragma: nocover
+        if not PY3 and isinstance(pron, unicode) and isinstance(origin, str):
             origin = origin.decode('utf-8')
         if dest in EXCLUDES and pron == origin:
             pron = translated
 
         # for python 2.x compatbillity
-        if not PY3:  # pragma: nocover
+        if not PY3:
             if isinstance(src, str):
                 src = src.decode('utf-8')
             if isinstance(dest, str):
@@ -187,7 +160,7 @@ class mkTranslator(object):
         try:
             src = ''.join(data[8][0])
             confidence = data[8][-2][0]
-        except Exception:  # pragma: nocover
+        except Exception:
             pass
         result = Detected(lang=src, confidence=confidence)
 

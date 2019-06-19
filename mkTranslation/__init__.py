@@ -3,5 +3,5 @@ __all__ = 'mkTranslator',
 __version__ = '1.1.2'
 
 
-from mkTranslation.client import mkTranslator
+from mkTranslation.translator  import mkTranslator
 from mkTranslation.constants import LANGCODES, LANGUAGES

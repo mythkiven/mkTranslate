@@ -7,10 +7,6 @@ import sys
 from requests.adapters import HTTPAdapter
 from mkTranslation.utils import rshift,PY3,unicode
 
-
-"""
-URL
-"""
 BASE = 'https://translate.google.com'
 TRANSLATE = 'https://{host}/translate_a/single'
 
@@ -29,30 +25,6 @@ class TimeoutAdapter(HTTPAdapter):
         return super(TimeoutAdapter, self).send(*args, **kwargs)
 
 class TokenAcquirer(object):
-    """Google Translate API token generator
-
-    translate.google.com uses a token to authorize the requests. If you are
-    not Google, you do have this token and will have to pay for use.
-    This class is the result of reverse engineering on the obfuscated and
-    minified code used by Google to generate such token.
-
-    The token is based on a seed which is updated once per hour and on the
-    text that will be translated.
-    Both are combined - by some strange math - in order to generate a final
-    token (e.g. 744915.856682) which is used by the API to validate the
-    request.
-
-    This operation will cause an additional request to get an initial
-    token from translate.google.com.
-
-    Example usage:
-        >>> from mkTranslation.gtoken import TokenAcquirer
-        >>> acquirer = TokenAcquirer()
-        >>> text = 'test'
-        >>> tk = acquirer.do(text)
-        >>> tk
-        950629.577246
-    """
 
     RE_TKK = re.compile(r'tkk:\'(.+?)\'', re.DOTALL)
     RE_RAWTKK = re.compile(r'tkk:\'(.+?)\'', re.DOTALL)
@@ -98,7 +70,7 @@ class TokenAcquirer(object):
                             keys[name] = node.value.n
                         # the value can sometimes be negative
                         elif isinstance(node.value, ast.UnaryOp) and \
-                                isinstance(node.value.op, ast.USub):  # pragma: nocover
+                                isinstance(node.value.op, ast.USub):
                             keys[name] = -node.value.operand.n
                 elif isinstance(node, ast.Return):
                     # parameters should be set after this point
@@ -108,15 +80,15 @@ class TokenAcquirer(object):
                 elif visit_return and n > 0:
                     # the default operator is '+' but implement some more for
                     # all possible scenarios
-                    if isinstance(node, ast.Add):  # pragma: nocover
+                    if isinstance(node, ast.Add):
                         pass
-                    elif isinstance(node, ast.Sub):  # pragma: nocover
+                    elif isinstance(node, ast.Sub):
                         operator = '-'
-                    elif isinstance(node, ast.Mult):  # pragma: nocover
+                    elif isinstance(node, ast.Mult):
                         operator = '*'
-                    elif isinstance(node, ast.Pow):  # pragma: nocover
+                    elif isinstance(node, ast.Pow):
                         operator = '**'
-                    elif isinstance(node, ast.BitXor):  # pragma: nocover
+                    elif isinstance(node, ast.BitXor):
                         operator = '^'
             # a safety way to avoid Exceptions
             clause = compile('{1}{0}{2}'.format(
@@ -127,21 +99,6 @@ class TokenAcquirer(object):
             self.tkk = result
 
     def _lazy(self, value):
-        """like lazy evalution, this method returns a lambda function that
-        returns value given.
-        We won't be needing this because this seems to have been built for
-        code obfuscation.
-
-        the original code of this method is as follows:
-
-           ... code-block: javascript
-
-               var ek = function(a) {
-                return function() {
-                    return a;
-                };
-               }
-        """
         return lambda: value
 
     def _xr(self, a, b):
@@ -206,7 +163,7 @@ class TokenAcquirer(object):
             a = self._xr(a, '+-a^+6')
         a = self._xr(a, '+-3^+b+-f')
         a ^= int(d[1]) if len(d) > 1 else 0
-        if a < 0:  # pragma: nocover
+        if a < 0:   
             a = (a & 2147483647) + 2147483648
         a %= 1000000  # int(1E6)
 
