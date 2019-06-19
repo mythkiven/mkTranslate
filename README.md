@@ -3,6 +3,7 @@
 ### 安装：
 
 `pip install mkTranslation`
+更新现有版本：`pip install --upgrade mkTranslation`
 
 ### 使用：
 
@@ -234,11 +235,10 @@ gw_input_title_signtx_usdt ="Pagar taxa de manuseio do USDT:%ld/%@"; /**"支付 
 ### 版本
 
 - V1.2.0 增加有道翻译，
-有道会对ip封锁，所以可能出现无法翻译的问题，此时将会使用 api 接口翻译，本人申请的 api 接口仅支持中英互译。[使用的key](http://fengmm521.lofter.com/post/2a9e99_7475571)
+有道会对ip封锁，所以可能出现无法翻译的问题，此时将会使用 api 接口翻译，**api 接口仅支持中英互译**。[使用的api key](http://fengmm521.lofter.com/post/2a9e99_7475571)
 - V1.1.3 增加命令行直接翻译文本
 
-更新本机的 mkTranslation：`pip install --upgrade mkTranslation`
-查看本机的 mkTranslation 信息：
+
 
 ### 后续：
 
@@ -251,6 +251,6 @@ gw_input_title_signtx_usdt ="Pagar taxa de manuseio do USDT:%ld/%@"; /**"支付 
 
 后续将会增加更多修复
 
-- 翻译渠道：
+- 有道翻译：
 
 优化有道翻译
