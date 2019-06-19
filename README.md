@@ -1,11 +1,17 @@
-# mkTranslate(V1.2.0)：支持多种语言的互译
+# mkTranslate(V1.2.3)：支持多种语言的互译
 
 ### 安装：
 
 `pip install mkTranslation`
+
 更新现有版本：`pip install --upgrade mkTranslation`
 
+如果安装后,终端不能识别`translate`命令，[参考这里](https://github.com/mythkiven/mkTranslate/issues/1)
+
 ### 使用：
+
+> 快速翻译 `$translate  'mkTranslate 支持多种语言的互译'` 将使用默认的 google 翻译且目标语言为'en'
+> 快速翻译 `$translate  'mkTranslate 支持多种语言的互译' -d 'ja'` 将使用默认的 google翻译
 
 ```
 -p 指定要翻译文档的路径
