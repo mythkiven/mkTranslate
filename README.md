@@ -1,5 +1,6 @@
 # mkTranslate: support multi-language translation
 
+[中文文档](https://github.com/mythkiven/mkTranslate/blob/master/README_zh.md)
 
 ### 1.Features
 
@@ -10,6 +11,7 @@
 - support google translation
 - support youdao translation
 - support i18ns.com translation
+- Check if the network is available, so choose google or Youdao translation channel
 - more features will be added..
 
 **The default translation is google translation, you can specify other translation channels**
@@ -34,7 +36,6 @@ Update existing version : `pip install --upgrade mkTranslation`
 -c  translation channel: [-c "google"] or [-c "youdao"] (default google)
 -s  original language, when using 'youdao' translation, it is best to specify the original language
 ```
-
 
 #### Translating documents
 
@@ -104,6 +105,8 @@ to ./translate_en_by_google_android.xml
 
 
 ### 5.Version
+
+- V1.4.0 Increase the network detection switch, if google is available, use google translation first, otherwise it will use xc translation
 - V1.3.1 Fix bugs in previous versions
 - V1.2.3 Increase fast translation `$translate  'mkTranslate 支持多种语言的互译'`
 - V1.2.0 Add youdao translation:
