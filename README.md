@@ -15,13 +15,13 @@
 **The default translation is google translation, you can specify other translation channels**
 
 
-### 2.installation：
+### 2.Installation：
 
 `pip install mkTranslation`
 
 Update existing version : `pip install --upgrade mkTranslation`
 
-If installed, the terminal cannot recognize the `translate` command, [reference here](https://github.com/mythkiven/mkTranslate/issues/1)
+`error: command not found : translate` , [reference here](https://github.com/mythkiven/mkTranslate/issues/1)
 
 
 ### 3.Usage：
@@ -57,8 +57,76 @@ $translate -t 'mkTranslate 支持多种语言的互译' -d 'ja' -s 'zh'  # Will 
     mkTranslateは複数の言語での翻訳をサポートします
 ```
 
+### 4.Demo
 
-### 4.Support the translation of any two languages as follows
+#### translate -p ./ios.strings -d 'pt'
+
+from ./ios.strings
+
+```
+common_tips_error = "错误";
+common_btn_sdk_pin_error = "PIN码输入错误，请检查输入！"; /**"PIN码输入错误，请检查输入！"*/
+/** ********************************************   */
+gw_input_title_signtx_usdt = "支付USDT手续费:%ld/%@"; /**"支付USDT手续费:%ld/%@"*/
+```
+
+to ./translate_pt_by_google_ios.strings
+
+```
+common_tips_error = "Erro";
+common_btn_sdk_pin_error = "O código PIN é inserido incorretamente, por favor, verifique a entrada!"; /**"PIN码输入错误，请检查输入！"*/
+/** ********************************************   */
+gw_input_title_signtx_usdt = "Pagar taxa de manuseio do USDT:%ld/%@"; /**"支付USDT手续费:%ld/%@"*/
+```
+
+#### translate -p ./android.xml
+from ./android.xml
+
+```
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- tab -->
+    <string name="network_error">网络不可用，点击屏幕重试</string>
+    <string name="scan_qr_code_warn">将二维码放入框内，即可自动扫描</string>
+    <string name="album_text">相册</string>
+</resources>
+```
+
+to ./translate_en_by_google_android.xml
+
+```
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- tab -->
+    <string name="network_error">Network is not available, click screen to try again</string>
+    <string name="scan_qr_code_warn">Put the QR code into the box and you can scan it automatically.</string>
+    <string name="album_text">Album</string>
+</resources>
+```
+
+
+### 5.Version
+- V1.3.1 Fix bugs in previous versions
+- V1.2.3 Increase fast translation `$translate  'mkTranslate 支持多种语言的互译'`
+- V1.2.0 Add youdao translation:
+There is a way to block ip, so three translation channels are used, of which api translation is a last resort, because the **api interface only supports Chinese-English translation**.Apikey is not registered yet, the currently used apikey is derived from: [api key](http://fengmm521.lofter.com/post/2a9e99_7475571).Although there are three translation channels, they may not be translated and need to be optimized.
+- V1.1.3 Add command line to translate text directly
+
+
+### 6.Future plan：
+
+- Repair translation channel：
+
+- Improve translation quality：
+
+Some simple fixes have been added so far：
+
+For `"user_notify_type_word_input_index" = "第 %ld/%@ 个单词";`  this entry，google translates to:  `% ld /% @ palavras`，
+and the script is automatically fixed as：`"user_notify_type_word_input_index" = "%ld/%@ palavras";`
+
+
+### 7.Other
+
+
+#### Support the translation of any two languages as follows
 
 ```
 'af': 'afrikaans',
@@ -169,72 +237,5 @@ $translate -t 'mkTranslate 支持多种语言的互译' -d 'ja' -s 'zh'  # Will 
 'he': 'Hebrew'
 ```
 
-
-### 4.demo
-
-#### translate -p ./ios.strings -d 'pt'
-
-from ./ios.strings
-
-```
-common_tips_error = "错误";
-common_btn_sdk_pin_error = "PIN码输入错误，请检查输入！"; /**"PIN码输入错误，请检查输入！"*/
-/** ********************************************   */
-gw_input_title_signtx_usdt = "支付USDT手续费:%ld/%@"; /**"支付USDT手续费:%ld/%@"*/
-```
-
-to ./translate_pt_by_google_ios.strings
-
-```
-common_tips_error = "Erro";
-common_btn_sdk_pin_error = "O código PIN é inserido incorretamente, por favor, verifique a entrada!"; /**"PIN码输入错误，请检查输入！"*/
-/** ********************************************   */
-gw_input_title_signtx_usdt = "Pagar taxa de manuseio do USDT:%ld/%@"; /**"支付USDT手续费:%ld/%@"*/
-```
-
-#### translate -p ./android.xml
-from ./android.xml
-
-```
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <!-- tab -->
-    <string name="network_error">网络不可用，点击屏幕重试</string>
-    <string name="scan_qr_code_warn">将二维码放入框内，即可自动扫描</string>
-    <string name="album_text">相册</string>
-</resources>
-```
-
-to ./translate_en_by_google_android.xml
-
-```
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <!-- tab -->
-    <string name="network_error">Network is not available, click screen to try again</string>
-    <string name="scan_qr_code_warn">Put the QR code into the box and you can scan it automatically.</string>
-    <string name="album_text">Album</string>
-</resources>
-```
-
-
-### Version
-- V1.3.1 Fix bugs in previous versions
-- V1.2.3 Increase fast translation `$translate  'mkTranslate 支持多种语言的互译'`
-- V1.2.0 Add youdao translation:
-There is a way to block ip, so three translation channels are used, of which api translation is a last resort, because the **api interface only supports Chinese-English translation**.Apikey is not registered yet, the currently used apikey is derived from: [api key](http://fengmm521.lofter.com/post/2a9e99_7475571).Although there are three translation channels, they may not be translated and need to be optimized.
-- V1.1.3 Add command line to translate text directly
-
-
-
-### Future plan：
-
-- Repair translation channel：
-
-- Improve translation quality：
-
-Some simple fixes have been added so far：
-
-For `"user_notify_type_word_input_index" = "第 %ld/%@ 个单词";`  this entry，google translates to:  `% ld /% @ palavras`，
-and the script is automatically fixed as：`"user_notify_type_word_input_index" = "%ld/%@ palavras";`
-
-
-### other
+#### Language Code Table:
+![](https://github.com/mythkiven/tmp/blob/master/resource/img/oc/language_code_table.png)
