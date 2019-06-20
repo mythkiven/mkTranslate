@@ -142,7 +142,11 @@ class mkTranslator(object):
         oldFileName = pathArray[len(pathArray)-1]
         fileType = oldFileName.split('.')[len(oldFileName.split('.'))-1]
         currentPath =  filepath.replace('/' + oldFileName,'') if len(pathArray)>2 else  os.path.abspath('.')
-        newFile = os.path.join(currentPath, 'translate_'+destination+'_by_'+channel+'_'+oldFileName)
+        newFile = ''
+        if(destination == 'zh-hant' or destination == 'zh-hans'):
+            newFile = os.path.join(currentPath, 'translate_'+destination+'_'+oldFileName)
+        else:
+            newFile = os.path.join(currentPath, 'translate_'+destination+'_by_'+channel+'_'+oldFileName)
         txd = ''
         print('translating..')
 

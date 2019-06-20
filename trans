@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import argparse
 import sys
+import re
 from mkTranslation.translator import mkTranslator
 
 def main():
@@ -13,8 +14,15 @@ def main():
     parser.add_argument('-a', '--detect', action='store_true', default=False,help='')
 
     args = parser.parse_args()
-    if(args.dest_language == 's' or args.dest_language == 't'):
-        args.dest_language = 'zh-han' + args.dest_language
+    if(args.dest_language):
+        if(args.dest_language == 's' or args.dest_language == 't'):
+            args.dest_language = 'zh-han' + args.dest_language
+        elif(re.search(r'zh-[HK|MO|SG|TW]',args.dest_language)):
+            args.dest_language = 'zh-hant'
+        elif(args.dest_language == 'zh-CN'):
+            args.dest_language = 'zh-hans'
+    print(args.dest_language)
+
     if args.detect:
         mkTranslator().translate_text(text=args.text, destination=args.dest_language,sourcelanguage=args.sourcelanguage,channel=args.channel)
     elif(args.text):

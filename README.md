@@ -77,7 +77,7 @@ $translate -t 'mkTranslate 支持多种语言的互译' -d 'ja' -s 'zh'  # Will 
 
 #### translate -p ./chinese.txt -d 'zh-hans'
 
-from
+from ./chinese.txt
 
 ```
 歷史
@@ -85,7 +85,7 @@ from
 1932年中華民國教育部公佈《國音常用字匯》（見现代標準汉语），確定了現代中國國語標準音系，还收录了部分“破体”、“小字”等宋元以来“通俗的简体字”。
 ```
 
-to
+to ./translate_zh-hant_chinese.txt
 
 ```
 历史
