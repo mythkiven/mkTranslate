@@ -6,6 +6,7 @@ import json
 import string
 import requests
 from mkTranslation import network
+from mkTranslation.translate_chinese import mkConverter
 from mkTranslation.translate_google import mkGoogleTranslator
 from mkTranslation.translate_youdao import mkYouDaoTranslator
 sys.path.append("..")
@@ -59,11 +60,17 @@ class mkTranslator(object):
                 return tx
         except Exception as e:
             print('')
+        if(destination.lower() == 'zh-hant'):
+            return mkConverter('zh-hant').convert(word)
+        elif(destination.lower() == 'zh-hans'):
+            return mkConverter('zh-hans').convert(word)
+        else:
+            pass
+
         if(channel == 'google'):
             return mkGoogleTranslator().translate(word, dest=destination).text
         else:
             return mkYouDaoTranslator().translate(word,destination,language)
-        
 
     def fix_tx(self,txt):
         if(txt.find('% ld')!=-1 or txt.find('% @')!=-1):
@@ -103,28 +110,33 @@ class mkTranslator(object):
         f = open(newfile,'w+')
         f.write(txd)
         f.close()
-
-    def translate_text(self,text, destination,sourcelanguage,channel):
+    def log(self,channel,dest):
         channel = network.select_network(channel)
+        if(dest == 'zh-hant' or dest == 'zh-hans'):
+            return
         if(channel == 'None'):
             print('[No network, no translation!]')
             sys.exit()
         elif(channel == 'google'):
             print('[Use google translation]')
-            print(mkGoogleTranslator().translate_text(text, dest=destination).text)
         else:
             print('[Use youdao translation]')
+
+    def translate_text(self,text, destination,sourcelanguage,channel):
+        channel = network.select_network(channel)
+        self.log(channel,destination)
+
+        if(channel == 'None'):
+            pass
+        elif(channel == 'google'):
+            print(mkGoogleTranslator().translate_text(text, dest=destination).text)
+        else:
             print(mkYouDaoTranslator().translate(text,destination,sourcelanguage))
 
     def translate_doc(self,filepath, destination,sourcelanguage,channel):
         channel = network.select_network(channel)
-        if(channel == 'None'):
-            print('[No network, no translation!]')
-            sys.exit()
-        elif(channel == 'google'):
-            print('[Use google translation]')
-        else:
-            print('[Use youdao translation]')
+        self.log(channel,destination)
+
         filepath = self.get_file(filepath)
         pathArray = filepath.split('/')
         oldFileName = pathArray[len(pathArray)-1]

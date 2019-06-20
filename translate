@@ -8,16 +8,19 @@ def main():
     parser = argparse.ArgumentParser(description='Command line tools translated using Google、youdao and i18ns.com')
     parser.add_argument('-t','--text',action='store',dest='text', help='translate text directly at the terminal')
     parser.add_argument('-p','--path',action='store',dest='file_path', help='The path of the file to be translated. (Default: ./)')
-    parser.add_argument('-d','--dest',action='store',dest='dest_language',default='en',help='The destination language you want to translate. (Default: en)')
+    parser.add_argument('-d','--dest',action='store',dest='dest_language',default='en',help='The destination language you want to translate. (Default: "en",繁体:"t",简体:"s")')
     parser.add_argument('-s','--sourcelanguage',action='store',dest='sourcelanguage',help='Set the original file language, first use "i18ns.com" translation')
     parser.add_argument('-c','--channel',action='store',dest='channel',default='google',help='By default, google translation can be used to specify other translation channels.([-c "google"] or [-c "youdao"])')
     args = parser.parse_args()
+
+    if(args.dest_language == 's' or args.dest_language == 't'):
+        args.dest_language = 'zh-han' + args.dest_language
     if args.text:
         mkTranslator().translate_text(text=args.text, destination=args.dest_language,sourcelanguage=args.sourcelanguage,channel=args.channel)
     elif(args.file_path):
         mkTranslator().translate_doc(filepath=args.file_path, destination=args.dest_language,sourcelanguage=args.sourcelanguage,channel=args.channel)
     else:
-        print('-p:path of the document being translated -t:translated text -d:target language (default "en") -c:translation channel:[-c "google"] or [-c "youdao"] -s:original language, when using "youdao" translation, it is best to set otherwise translation will not be accurate')
+        print('-p:path of the document being translated -t:translated text -d:target language (Default: "en",繁体:"t",简体:"s") -c:translation channel:[-c "google"] or [-c "youdao"] -s:original language, when using "youdao" translation, it is best to set otherwise translation will not be accurate')
 if __name__ == '__main__':
     main()
 

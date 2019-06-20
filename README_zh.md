@@ -28,7 +28,7 @@
 ```
 -p 指定要翻译文档的路径
 -t 指定要翻译的文本
--d 目标语言(缺省'en')
+-d 目标语言(缺省'en',繁体简体互译时，可以用's'替代'zh-hans',用't'替代'zh-hans',s=simple=简体，t=traditional=繁体)
 -c 指定翻译渠道:[-c "google"] or [-c "youdao"] (缺省google)
 -s 原始语言，有道翻译检测原始文本语言不太准确，翻译的结果会不太准确，所以使用有道翻译时，最好要指定原始的语言
 ```
@@ -36,13 +36,27 @@
 #### 翻译文档
 
 ```
-translate -p ./ios.strings       # 默认使用 google 翻译，默认目标语言为 'en'
-translate -p ./android.xml -d 'pt'       # 默认使用 google 翻译，目标语言为葡萄牙语
-translate -p ./test.txt -d 'pt' -c 'youdao' -s 'ja'   # 使用有道翻译，目标语言为日语
+translate -p ./chinese.txt  -d 's'                  # 文件转为简体。繁体:'t' 简体:'s'
+translate -p ./ios.strings                          # 默认使用 google 翻译，默认目标语言为 'en'
+translate -p ./android.xml -d 'pt'                  # 默认使用 google 翻译，目标语言为葡萄牙语
+translate -p ./test.txt -d 'pt' -c 'youdao' -s 'ja' # 使用有道翻译，目标语言为日语
 自动在原始文件目录生成翻译后的文件  translate_pt_android.xml translate_en_ios.strings translate_ja_test.txt
 ```
 
 #### 翻译文本
+
+繁体简体互译
+```
+$ translate -t '1932年中華民國教育部公佈《國音常用字匯》' -d 'zh-hans'
+1932年中华民国教育部公布《国音常用字汇》
+$ translate -t '1932年中华民国教育部公布《国音常用字汇》' -d 'zh-hant'
+1932年中華民國教育部公佈《國音常用字彙》
+
+$ translate -t '1932年中华民国教育部公布《国音常用字汇》' -d t
+1932年中華民國教育部公佈《國音常用字彙》
+$ translate -t '1932年中華民國教育部公佈《國音常用字匯》' -d s
+1932年中华民国教育部公布《国音常用字汇》
+```
 
 ```
 $translate -t 'Facebook發幣，是偉大征途還是飛蛾撲火？'  # 默认使用谷歌翻译(目标语言是葡萄牙语)
@@ -222,6 +236,7 @@ to ./translate_en_by_google_android.xml
 
 ### 版本
 
+- V1.5.0 增加中文简体和中文繁体的互译
 - V1.4.0 增加网络检测，自动切换谷歌或有道翻译
 - V1.2.3 增加快速翻译 `$translate  'mkTranslate 支持多种语言的互译'`
 - V1.2.0 增加有道翻译，

@@ -12,6 +12,7 @@
 - support youdao translation
 - support i18ns.com translation
 - Check if the network is available, so choose google or Youdao translation channel
+- 支持繁体，简体互译
 - more features will be added..
 
 **The default translation is google translation, you can specify other translation channels**
@@ -32,7 +33,7 @@ Update existing version : `pip install --upgrade mkTranslation`
 ```
 -p  path to the translated document
 -t  translated text
--d  target language (default 'en')
+-d  target language (default 'en',繁体简体互译时，可以用's'替代'zh-hans',用't'替代'zh-hans',s=simple=简体，t=traditional=繁体)
 -c  translation channel: [-c "google"] or [-c "youdao"] (default google)
 -s  original language, when using 'youdao' translation, it is best to specify the original language
 ```
@@ -40,14 +41,28 @@ Update existing version : `pip install --upgrade mkTranslation`
 #### Translating documents
 
 ```
-translate -p ./ios.strings        # Use google translation by default （the default target language is 'en'）
-translate -p ./android.xml -d 'pt'       # Use google translation by default (the default target language is 'pt'）
-translate -p ./test.txt -d 'zh' -c 'youdao' -s 'ja'   # Use 'youdao' translation  (the default target language is 'ja'）
+translate -p ./chinese.txt  -d 's'                  # 文件转为简体。繁体:'t' 简体:'s'
+translate -p ./ios.strings                          # Use google translation by default （the default target language is 'en'）
+translate -p ./android.xml -d 'pt'                  # Use google translation by default (the default target language is 'pt'）
+translate -p ./test.txt -d 'zh' -c 'youdao' -s 'ja' # Use 'youdao' translation  (the default target language is 'ja'）
 
 Automatically generate translated files in the original file directory : translate_pt_android.xml translate_en_ios.strings translate_ja_test.txt
 ```
 
 #### Translated text
+
+繁体简体互译
+```
+$ translate -t '1932年中華民國教育部公佈《國音常用字匯》' -d 'zh-hans'
+1932年中华民国教育部公布《国音常用字汇》
+$ translate -t '1932年中华民国教育部公布《国音常用字汇》' -d 'zh-hant'
+1932年中華民國教育部公佈《國音常用字彙》
+
+$ translate -t '1932年中华民国教育部公布《国音常用字汇》' -d t
+1932年中華民國教育部公佈《國音常用字彙》
+$ translate -t '1932年中華民國教育部公佈《國音常用字匯》' -d s
+1932年中华民国教育部公布《国音常用字汇》
+```
 
 ```
 $translate -t 'mkTranslate 支持多种语言的互译'                  # Will use the default google translation （the default target language is 'en'）
@@ -59,6 +74,24 @@ $translate -t 'mkTranslate 支持多种语言的互译' -d 'ja' -s 'zh'  # Will 
 ```
 
 ### 4.Demo
+
+#### translate -p ./chinese.txt -d 'zh-hans'
+
+from
+
+```
+歷史
+漢字简化可追溯至新文化運動中關於文字及語文教言和國家發展的討論。
+1932年中華民國教育部公佈《國音常用字匯》（見现代標準汉语），確定了現代中國國語標準音系，还收录了部分“破体”、“小字”等宋元以来“通俗的简体字”。
+```
+
+to
+
+```
+历史
+汉字简化可追溯至新文化运动中关于文字及语文教言和国家发展的讨论。
+1932年中华民国教育部公布《国音常用字汇》（见现代标准汉语），确定了现代中国国语标准音系，还收录了部分“破体”、“小字”等宋元以来“通俗的简体字”。
+```
 
 #### translate -p ./ios.strings -d 'pt'
 
@@ -106,6 +139,7 @@ to ./translate_en_by_google_android.xml
 
 ### 5.Version
 
+- V1.5.0 Increase Chinese Simplified and Chinese Traditional Translation
 - V1.4.0 Increase the network detection switch, if google is available, use google translation first, otherwise it will use xc translation
 - V1.3.1 Fix bugs in previous versions
 - V1.2.3 Increase fast translation `$translate  'mkTranslate 支持多种语言的互译'`
