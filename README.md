@@ -17,7 +17,7 @@
 
 **The default translation is google translation, you can specify other translation channels**
 
-- **After using this tool to translate, please be sure to verify it manually. Otherwise, it may cause confusion or political risk due to semantic differences, such as when it comes to Taiwan, Pakistan, India and Turkey.**
+- **After using this tool for translation, please be sure to verify it manually, otherwise it may cause confusion or political risk due to semantic differences.**
 - **In fact, any kind of translation tool will have this kind of problem, please be cautious to translate**
 
 ### 2.Installation：
