@@ -1,0 +1,4 @@
+common_tips_error ="Erro";
+common_btn_sdk_pin_error ="O código PIN é inserido incorretamente, por favor, verifique a entrada!"; /**"PIN码输入错误，请检查输入！"*/
+/** ********************************************   */
+gw_input_title_signtx_usdt ="Pagar taxa de manuseio do USDT:%ld/%@"; /**"支付USDT手续费:%ld/%@"*/

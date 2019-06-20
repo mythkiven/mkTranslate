@@ -1,9 +1,0 @@
-common_btn_sdk_pin_error ="error";
-common_btn_sdk_pin_error ="PIN code input error, please check the input!"; /**"PIN码输入错误，请检查输入！"*/
-common_btn_sdk_cys_error ="Mnemonic word or mnemonic word password error, please check the input!"; /**"助记词或助记词密码错误，请检查输入！"*/
-Home_alertview_pin ="Please enter the PIN code on the device..."; /**"请在设备上输入PIN码..."*/
-Home_alertview_cpinconnect ="Connecting now.."; /**"正在建立连接.."*/
-Home_alertview_cpinunconnect ="disconnected"; /**"已断开连接"*/
-/** ********************************************   */
-gw_input_title_signtx ="%@/%@ transfer"; /**"%@转账"*/
-gw_input_title_signtx_usdt ="USDT fee :%ld/%@"; /**"支付USDT手续费:%ld/%@"*/

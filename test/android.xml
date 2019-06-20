@@ -1,17 +1,6 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="ensure_app_normal_run_permission">为了保证软件的正常运行，必须要获取权限</string>
     <!-- tab -->
     <string name="network_error">网络不可用，点击屏幕重试</string>
-    <string name="last_page">错误</string>
     <string name="scan_qr_code_warn">将二维码放入框内，即可自动扫描</string>
     <string name="album_text">相册</string>
-    <string name="qr_code_text">二维码</string>
-    <string name="scan_qr_code_from_photo_wrong">没有找到二维码</string>
-    <string name="most_withdraw">最多可用:</string>
-    <string name="all_text">全部</string>
-    <string name="withdraw_chain_status"><xliff:g>%s</xliff:g></string>
-    <string name="create_wallet_tips">开始以下操作前，请确保您处在四周无人、没有摄像头的安全环境，并准备好一支笔和您的助记码记录卡或一张空白卡纸</string>
-    <string name="system_setting">系统设置</string>
-    <string name="payfor_miners">支付矿工费</string>
-    <string name="high_grade">高级设置</string>
 </resources>

@@ -1,9 +1,4 @@
-common_btn_sdk_pin_error = "错误";
+common_tips_error = "错误";
 common_btn_sdk_pin_error = "PIN码输入错误，请检查输入！"; /**"PIN码输入错误，请检查输入！"*/
-common_btn_sdk_cys_error = "助记词或助记词密码错误，请检查输入！"; /**"助记词或助记词密码错误，请检查输入！"*/
-Home_alertview_pin = "请在设备上输入PIN码..."; /**"请在设备上输入PIN码..."*/
-Home_alertview_cpinconnect = "正在建立连接.."; /**"正在建立连接.."*/
-Home_alertview_cpinunconnect = "已断开连接"; /**"已断开连接"*/
 /** ********************************************   */
-gw_input_title_signtx = "%@/%@转账"; /**"%@转账"*/
 gw_input_title_signtx_usdt = "支付USDT手续费:%ld/%@"; /**"支付USDT手续费:%ld/%@"*/

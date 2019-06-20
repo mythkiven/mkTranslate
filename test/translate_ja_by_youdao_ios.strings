@@ -1,9 +1,0 @@
-common_btn_sdk_pin_error ="ミス";
-common_btn_sdk_pin_error ="PINコード入力エラー、入力確認を!"; /**"PIN码输入错误，请检查输入！"*/
-common_btn_sdk_cys_error ="助记词・助记词パスワードが间违っていますので、入力をチェックしてください!"; /**"助记词或助记词密码错误，请检查输入！"*/
-Home_alertview_pin ="装置にPINコードを入力してください。"; /**"请在设备上输入PIN码..."*/
-Home_alertview_cpinconnect ="接続が確立しています。"; /**"正在建立连接.."*/
-Home_alertview_cpinunconnect ="接続が切断された"; /**"已断开连接"*/
-/** ********************************************   */
-gw_input_title_signtx ="@/%@振替"; /**"%@转账"*/
-gw_input_title_signtx_usdt ="USDT手数料支払い:%ld/%@"; /**"支付USDT手续费:%ld/%@"*/
