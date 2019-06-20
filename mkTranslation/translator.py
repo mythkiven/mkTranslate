@@ -5,6 +5,7 @@ import sys
 import json
 import string
 import requests
+from mkTranslation import network
 from mkTranslation.translate_google import mkGoogleTranslator
 from mkTranslation.translate_youdao import mkYouDaoTranslator
 sys.path.append("..")
@@ -104,15 +105,26 @@ class mkTranslator(object):
         f.close()
 
     def translate_text(self,text, destination,sourcelanguage,channel):
-        channel = channel if channel else 'google'
-        if(channel == 'google'):
+        channel = network.select_network(channel)
+        if(channel == 'None'):
+            print('[No network, no translation!]')
+            sys.exit()
+        elif(channel == 'google'):
+            print('[Use google translation]')
             print(mkGoogleTranslator().translate_text(text, dest=destination).text)
         else:
+            print('[Use youdao translation]')
             print(mkYouDaoTranslator().translate(text,destination,sourcelanguage))
 
     def translate_doc(self,filepath, destination,sourcelanguage,channel):
-        channel = channel if channel else 'google'
-
+        channel = network.select_network(channel)
+        if(channel == 'None'):
+            print('[No network, no translation!]')
+            sys.exit()
+        elif(channel == 'google'):
+            print('[Use google translation]')
+        else:
+            print('[Use youdao translation]')
         filepath = self.get_file(filepath)
         pathArray = filepath.split('/')
         oldFileName = pathArray[len(pathArray)-1]

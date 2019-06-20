@@ -4,11 +4,24 @@ import time
 import re
 import math
 import sys
+import os
 from requests.adapters import HTTPAdapter
 from mkTranslation.utils import rshift,PY3,unicode
 
 BASE = 'https://translate.google.com'
 TRANSLATE = 'https://{host}/translate_a/single'
+
+
+def select_network(channel):
+    url1 = 'translate.google.com'
+    url2 = 'youdao.com'
+    backinfo1 = os.system('ping %s -c 1 > /dev/null 2>&1'%url1)
+    backinfo2 = os.system('ping %s -c 1 > /dev/null 2>&1'%url2)
+    if(backinfo1 == 0 or backinfo2 == 0 ):
+        return 'google' if(backinfo1 == 0) else 'youdao'
+    else:
+        return 'None'
+
 
 class TimeoutAdapter(HTTPAdapter):
     def __init__(self, timeout=None, *args, **kwargs):
@@ -18,6 +31,8 @@ class TimeoutAdapter(HTTPAdapter):
     def send(self, *args, **kwargs):
         kwargs['timeout'] = self.timeout
         return super(TimeoutAdapter, self).send(*args, **kwargs)
+
+
 
 class TokenAcquirer(object):
 
