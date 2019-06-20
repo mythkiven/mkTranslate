@@ -69,7 +69,7 @@ def install():
             'pytest',
             'coveralls',
         ],
-        scripts=['translate']
+        scripts=['translate','trans']
     )
 
 
