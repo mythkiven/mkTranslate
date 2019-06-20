@@ -237,5 +237,27 @@ and the script is automatically fixed as：`"user_notify_type_word_input_index" 
 'he': 'Hebrew'
 ```
 
+#### Free Online translate service
+- [Google Translate](https://translate.google.com/)
+maybe the most powerful translation tool. 100+ languages supported.
+
+- [Bing translator](https://bing.com/translator)
+a smart and powerful translation tool from Microsoft. I think it's the best translate tool.
+
+- [Yandex Translate](https://translate.yandex.com/)
+a translate tool from a russian search engine company, good at translation with russian related languages. 95 languages supported.
+
+- [DeepL Translator](https://www.deepl.com/en/translator)
+a new rising translation company, good at languages translation in european.
+
+- [Baidu Fanyi](https://fanyi.baidu.com/)
+a translate tool build by the biggest chinese search engine company. good at eastern languages.
+
+- [Alibaba Online Translation](https://translate.alibaba.com/)
+a translation tool from e-commerce giant company Alibaba.
+
+- [www.i18ns.com](https://www.i18ns.com/zh/help.html)
+
+
 #### Language Code Table:
 ![](https://github.com/mythkiven/tmp/blob/master/resource/img/oc/language_code_table.png)
