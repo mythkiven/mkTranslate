@@ -1,0 +1,2 @@
+Duas entradas inconsistentes
+A criação da carteira falhou. Por favor tente de novo mais tarde. Lembre-se de registar os códigos PIN, mnemónica e mnemónica.

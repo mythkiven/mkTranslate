@@ -153,16 +153,12 @@ class mkTranslator(object):
         # text
         if(fileType.lower() == 'text' or  fileType.lower() == 'txt'):
             self.write_tx(filepath,newFile,r"text",r"text",destination,sourcelanguage,channel)
-            print('translation completed')
-
         # oc:xx.string
         elif(fileType.lower() == 'strings'):
             self.write_tx(filepath,newFile,r"=\s*\"(.+?)\"\s*;",'="'+'content'+'";',destination,sourcelanguage,channel)
-            print('translation completed')
         # java:xx.xml
         elif(fileType.lower() == 'xml'):
             self.write_tx(filepath,newFile,r">\s*(.+?)\s*</string>",'>'+'content'+'</string>',destination,sourcelanguage,channel)
-            print('translation completed')
         else:
             f = open(filepath)
             line = f.readline()
@@ -174,4 +170,4 @@ class mkTranslator(object):
             f = open(newFile,'w+')
             f.write(txd)
             f.close()
-            print('translation completed')
+        print('translation completed,file saved in ['+newFile+']')

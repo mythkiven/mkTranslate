@@ -2,6 +2,11 @@
 
 [中文文档](https://github.com/mythkiven/mkTranslate/blob/master/README_zh.md)
 
+**mkTranslate: Faster translation**
+
+![](https://github.com/mythkiven/tmp/blob/master/resource/img/oc/translate_quick.png)
+
+
 ### 1.Features
 
 - translated text

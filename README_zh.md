@@ -1,6 +1,11 @@
 # mkTranslate：支持多种语言的互译
 
 
+更加便捷的翻译方式：
+
+![](https://github.com/mythkiven/tmp/blob/master/resource/img/oc/translate_quick.png)
+
+
 ### 功能
 
 - 翻译文本文件

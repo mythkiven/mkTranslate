@@ -21,7 +21,7 @@ def main():
             args.dest_language = 'zh-hant'
         elif(args.dest_language == 'zh-CN'):
             args.dest_language = 'zh-hans'
-
+    print('Target language: '+args.dest_language)
     if args.text:
         mkTranslator().translate_text(text=args.text, destination=args.dest_language,sourcelanguage=args.sourcelanguage,channel=args.channel)
     elif(args.file_path):
