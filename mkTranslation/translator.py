@@ -6,6 +6,7 @@ import json
 import string
 import requests
 from mkTranslation import utils
+from mkTranslation.utils import  isWindows,pathSeparator
 from mkTranslation import network
 from mkTranslation.translate_chinese import mkConverter
 from mkTranslation.translate_google import mkGoogleTranslator
@@ -16,7 +17,7 @@ class mkTranslator(object):
 
     def get_file(self,path):
         if(not os.path.exists(path)):
-            pathArray = path.split('/')
+            pathArray = path.split(pathSeparator)
             fileName = pathArray[len(pathArray)-1]
             return os.path.join(os.path.abspath('.'),fileName)
         return path
@@ -74,7 +75,6 @@ class mkTranslator(object):
             return mkYouDaoTranslator().translate(word,destination,language)
 
     def fix_tx(self,txt):
-        utils.printf('《《《'+txt)
         if(txt.find('% ld')!=-1 or txt.find('% @')!=-1):
             tsing = re.search(r'%\s*(@|ld)\s*/\s*%\s*(ld|@)',txt)
             if(tsing):
@@ -83,7 +83,10 @@ class mkTranslator(object):
         return txt
 
     def write_tx(self,oldfile,newfile,reg,creg,des,lan,channel):
-        f = open(oldfile)
+        if(not isWindows):
+            f = open(oldfile)
+        else:
+            f = open(oldfile, encoding='UTF-8')
         line = f.readline()
         txd = ''
         while line:
@@ -113,7 +116,6 @@ class mkTranslator(object):
         f.write(txd)
         f.close()
     def log(self,channel,dest):
-        channel = network.select_network(channel)
         if(dest == 'zh-hant' or dest == 'zh-hans'):
             return
         if(channel == 'None'):
@@ -125,6 +127,7 @@ class mkTranslator(object):
             utils.printf('[Use youdao translation]')
 
     def translate_text(self,text, destination,sourcelanguage,channel):
+
         channel = network.select_network(channel)
         self.log(channel,destination)
 
@@ -140,10 +143,12 @@ class mkTranslator(object):
         self.log(channel,destination)
 
         filepath = self.get_file(filepath)
-        pathArray = filepath.split('/')
+        pathArray = filepath.split(pathSeparator)
+
         oldFileName = pathArray[len(pathArray)-1]
         fileType = oldFileName.split('.')[len(oldFileName.split('.'))-1]
-        currentPath =  filepath.replace('/' + oldFileName,'') if len(pathArray)>2 else  os.path.abspath('.')
+        currentPath =  filepath.replace(pathSeparator + oldFileName,'') if len(pathArray)>2 else  os.path.abspath('.')
+
         newFile = ''
         if(destination == 'zh-hant' or destination == 'zh-hans'):
             newFile = os.path.join(currentPath, 'translate_'+destination+'_'+oldFileName)
@@ -162,7 +167,10 @@ class mkTranslator(object):
         elif(fileType.lower() == 'xml'):
             self.write_tx(filepath,newFile,r">\s*(.+?)\s*</string>",'>'+'content'+'</string>',destination,sourcelanguage,channel)
         else:
-            f = open(filepath)
+            if(not isWindows):
+                f = open(filepath)
+            else:
+                f = open(filepath, encoding='UTF-8')
             line = f.readline()
             while line:
                 if(len(line)):

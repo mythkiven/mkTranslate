@@ -7,6 +7,7 @@ import sys
 import os
 from requests.adapters import HTTPAdapter
 from mkTranslation.utils import rshift,PY3,unicode
+from mkTranslation import utils
 
 BASE = 'https://translate.google.com'
 TRANSLATE = 'https://{host}/translate_a/single'
@@ -15,8 +16,15 @@ TRANSLATE = 'https://{host}/translate_a/single'
 def select_network(channel):
     url1 = 'translate.google.com'
     url2 = 'youdao.com'
-    backinfo1 = os.system('ping %s -c 1 > /dev/null 2>&1'%url1)
-    backinfo2 = os.system('ping %s -c 1 > /dev/null 2>&1'%url2)
+    backinfo1 = ''
+    backinfo2 = ''
+    if(sys.platform == 'win32'):
+        backinfo1 = os.system('ping %s -n 1 > NULL'%url1)
+        backinfo2 = os.system('ping %s -n 1 > NULL'%url2)
+    else:
+        backinfo1 = os.system('ping %s -c 1 > /dev/null 2>&1'%url1)
+        backinfo2 = os.system('ping %s -c 1 > /dev/null 2>&1'%url2)
+
     if(backinfo1 == 0 or backinfo2 == 0 ):
         return 'google' if(backinfo1 == 0) else 'youdao'
     else:

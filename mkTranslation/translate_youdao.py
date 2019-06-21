@@ -7,7 +7,6 @@ import re
 import sys
 import os
 from requests.exceptions import RequestException
-from bs4 import BeautifulSoup
 from mkTranslation import utils
 
 PY3 = sys.version_info > (3, )

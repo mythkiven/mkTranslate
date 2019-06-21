@@ -13,6 +13,8 @@ except:
 
 PY3 = sys.version_info > (3, )
 unicode = str if PY3 else unicode
+isWindows = True if sys.platform == 'win32' else False
+pathSeparator = """\\""" if isWindows else '/'
 
 def build_params(query, src, dest, token):
     params = {

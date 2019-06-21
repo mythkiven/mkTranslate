@@ -18,7 +18,7 @@
 - support i18ns.com translation
 - Check if the network is available, so choose google or Youdao translation channel
 - 支持繁体，简体互译
-- Support for macos , ubuntu , Windows operating system(requires python2.x or python3.x environment)
+- Support macos , ubuntu , Windows operating system(requires python2.x or python3.x environment)
 - Support alfred (will be added)
 - more features will be added..
 
@@ -28,7 +28,25 @@
 
 ### 2.Installation：
 
-`pip install mkTranslation`
+- mac or linux:
+```
+$ pip install mkTranslation
+```
+- windows:
+```
+>python3 -m pip install mkTranslation
+
+>python3 -m pip show mkTranslation
+    Name: mkTranslation
+    Version: 1.5.6
+    Location: c:\program files\python37\lib\site-packages
+    ...
+>cd c:\Program Files\Python37\Scripts && dir #  Will find the translate executable
+>copy translate C:\Windows
+>cd  C:\Windows && dir  #  Will find the translate executable
+
+Now you can use translate to translate
+```
 
 Update existing version : `pip install --upgrade mkTranslation`
 
