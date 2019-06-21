@@ -73,6 +73,7 @@ class mkTranslator(object):
             return mkYouDaoTranslator().translate(word,destination,language)
 
     def fix_tx(self,txt):
+        print('《《《'+txt)
         if(txt.find('% ld')!=-1 or txt.find('% @')!=-1):
             tsing = re.search(r'%\s*(@|ld)\s*/\s*%\s*(ld|@)',txt)
             if(tsing):

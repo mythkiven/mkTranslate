@@ -1,0 +1,2 @@
+common_tips_error ="error";
+gw_input_title_signtx_usdt ="Pay USDT handling fee: %ld/%@"; /**"支付USDT手续费:%ld/%@"*/

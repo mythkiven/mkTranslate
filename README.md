@@ -22,8 +22,7 @@
 
 **The default translation is google translation, you can specify other translation channels**
 
-- **After using this tool for translation, please be sure to verify it manually, otherwise it may cause confusion or political risk due to semantic differences.**
-- **In fact, any kind of translation tool will have this kind of problem, please be cautious to translate**
+- **After the translation, be sure to verify it manually, otherwise there may be confusion or political risk due to semantic differences. In fact, any translation tool will have this problem, please be careful to deal with**
 
 ### 2.Installation：
 
