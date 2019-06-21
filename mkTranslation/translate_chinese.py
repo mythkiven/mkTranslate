@@ -4,6 +4,7 @@ from copy import deepcopy
 import re
 import sys
 
+from mkTranslation import utils
 from mkTranslation import zh_data
 from mkTranslation.zh_data import zh2Hant, zh2Hans
 
@@ -150,7 +151,7 @@ class StatesMachine(object):
             self.state = START
             new = self.feed(char, map)
         elif self.state == FAIL:
-            raise print('Translate States Machine '
+            raise utils.printf('Translate States Machine '
                     'have error with input data %s' % node)
         return new
 

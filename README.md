@@ -18,6 +18,8 @@
 - support i18ns.com translation
 - Check if the network is available, so choose google or Youdao translation channel
 - 支持繁体，简体互译
+- Support for macos , ubuntu , Windows operating system(requires python2.x or python3.x environment)
+- Support alfred (will be added)
 - more features will be added..
 
 **The default translation is google translation, you can specify other translation channels**

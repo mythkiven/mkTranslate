@@ -1,2 +1,0 @@
-Inconsistent input twice
-Failed to create wallet. Please try again later. Please note that the PIN code, mnemonic password and mnemonic are recorded.

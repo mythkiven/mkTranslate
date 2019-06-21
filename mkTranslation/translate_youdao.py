@@ -8,6 +8,7 @@ import sys
 import os
 from requests.exceptions import RequestException
 from bs4 import BeautifulSoup
+from mkTranslation import utils
 
 PY3 = sys.version_info > (3, )
 unicode = str if PY3 else unicode
@@ -48,7 +49,7 @@ class mkYouDaoTranslator(object):
             if(resp.json()['translation']):
                 return resp.json()['translation'][0]
         except:
-            print('使用有道备用翻译通道2')
+            utils.printf('使用有道备用翻译通道2')
             return self.trans2(text,dest,src)
 
     def trans2(self, text, dest, src):
@@ -78,7 +79,7 @@ class mkYouDaoTranslator(object):
             return self.trans3(text,dest,src)
 
     def trans3(self, text, dest, src):
-        print('使用接口，仅支持中英互译,将翻译为英文')
+        utils.printf('使用接口，仅支持中英互译,将翻译为英文')
         params = {
             'keyfrom': 'woodcol',
             'key': '1522180019',
@@ -93,5 +94,5 @@ class mkYouDaoTranslator(object):
             self.result = r.json()
             return self.result['translation'][0]
         except RequestException as e:
-            print('有道免费接口遭遇封锁，请联系作者:https://github.com/mythkiven/mkTranslate')
+            utils.printf('有道免费接口遭遇封锁，请联系作者:https://github.com/mythkiven/mkTranslate')
             sys.exit()

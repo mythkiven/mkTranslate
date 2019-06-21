@@ -3,6 +3,7 @@
 import argparse
 import sys
 import re
+from mkTranslation import utils
 from mkTranslation.translator import mkTranslator
 
 def main():
@@ -21,13 +22,13 @@ def main():
             args.dest_language = 'zh-hant'
         elif(args.dest_language == 'zh-CN'):
             args.dest_language = 'zh-hans'
-    print('Target language '+args.dest_language)
+    utils.printf('Target language '+args.dest_language)
     if args.detect:
         mkTranslator().translate_text(text=args.text, destination=args.dest_language,sourcelanguage=args.sourcelanguage,channel=args.channel)
     elif(args.text):
         mkTranslator().translate_text(text=args.text, destination=args.dest_language,sourcelanguage=args.sourcelanguage,channel=args.channel)
     else:
-        print('-p:path of the document being translated -d:target language (Default: "en",繁体:"t",简体:"s") -c:translation channel:[-c "google"] or [-c "youdao"] ')
+        utils.printf('-p:path of the document being translated -d:target language (Default: "en",繁体:"t",简体:"s") -c:translation channel:[-c "google"] or [-c "youdao"] ')
 if __name__ == '__main__':
     main()
 

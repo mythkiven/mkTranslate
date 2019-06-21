@@ -56,6 +56,8 @@ def legacy_format_json(original):
     converted = json.loads(text)
     return converted
 
+def printf(text):
+    print(text)
 
 def format_json(original):
     try:

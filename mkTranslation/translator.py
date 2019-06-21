@@ -5,6 +5,7 @@ import sys
 import json
 import string
 import requests
+from mkTranslation import utils
 from mkTranslation import network
 from mkTranslation.translate_chinese import mkConverter
 from mkTranslation.translate_google import mkGoogleTranslator
@@ -47,7 +48,7 @@ class mkTranslator(object):
             if(isExist):
                 for x in txd:
                     if(dest == x['lang']):
-                        print('use \'https://i18ns.com/\' translation '+word+' to '+x[dest][0] + ',others use google translation')
+                        utils.printf('use \'https://i18ns.com/\' translation '+word+' to '+x[dest][0] + ',others use google translation')
                         return x[dest][0]+''
         return 'null'
 
@@ -59,7 +60,7 @@ class mkTranslator(object):
             if(tx != 'null'):
                 return tx
         except Exception as e:
-            print('')
+            utils.printf('')
         if(destination.lower() == 'zh-hant'):
             return mkConverter('zh-hant').convert(word)
         elif(destination.lower() == 'zh-hans'):
@@ -73,7 +74,7 @@ class mkTranslator(object):
             return mkYouDaoTranslator().translate(word,destination,language)
 
     def fix_tx(self,txt):
-        print('《《《'+txt)
+        utils.printf('《《《'+txt)
         if(txt.find('% ld')!=-1 or txt.find('% @')!=-1):
             tsing = re.search(r'%\s*(@|ld)\s*/\s*%\s*(ld|@)',txt)
             if(tsing):
@@ -91,22 +92,22 @@ class mkTranslator(object):
                 line = f.readline()
                 continue
             originLine = line
-            print('original:'+originLine)
+            utils.printf('original:'+originLine)
             line = re.findall(reg,line)
             if(len(line) and line[0]):
                 txc = self.translate(line[0],des,lan,channel)
                 if(len(txc)):
                     originLine = re.sub(reg,creg.replace('content',txc), originLine)
                 else:
-                    print('translate fail:' + line)
+                    utils.printf('translate fail:' + line)
             elif(reg==creg==r'text'):
                 originLine = self.translate(originLine,des,lan,channel)
             else:
-                print('skip: '+originLine)
+                utils.printf('skip: '+originLine)
             originLine = self.fix_tx(originLine)
-            print('translated:'+originLine)
+            utils.printf('translated:'+originLine)
             txd += originLine + '\n'
-            print('-----')
+            utils.printf('-----')
             line = f.readline()
         f = open(newfile,'w+')
         f.write(txd)
@@ -116,12 +117,12 @@ class mkTranslator(object):
         if(dest == 'zh-hant' or dest == 'zh-hans'):
             return
         if(channel == 'None'):
-            print('[No network, no translation!]')
+            utils.printf('[No network, no translation!]')
             sys.exit()
         elif(channel == 'google'):
-            print('[Use google translation]')
+            utils.printf('[Use google translation]')
         else:
-            print('[Use youdao translation]')
+            utils.printf('[Use youdao translation]')
 
     def translate_text(self,text, destination,sourcelanguage,channel):
         channel = network.select_network(channel)
@@ -130,9 +131,9 @@ class mkTranslator(object):
         if(channel == 'None'):
             pass
         elif(channel == 'google'):
-            print(mkGoogleTranslator().translate_text(text, dest=destination).text)
+            utils.printf(mkGoogleTranslator().translate_text(text, dest=destination).text)
         else:
-            print(mkYouDaoTranslator().translate(text,destination,sourcelanguage))
+            utils.printf(mkYouDaoTranslator().translate(text,destination,sourcelanguage))
 
     def translate_doc(self,filepath, destination,sourcelanguage,channel):
         channel = network.select_network(channel)
@@ -149,7 +150,7 @@ class mkTranslator(object):
         else:
             newFile = os.path.join(currentPath, 'translate_'+destination+'_by_'+channel+'_'+oldFileName)
         txd = ''
-        print('translating..')
+        utils.printf('translating..')
 
         # text
         if(fileType.lower() == 'text' or  fileType.lower() == 'txt'):
@@ -171,4 +172,4 @@ class mkTranslator(object):
             f = open(newFile,'w+')
             f.write(txd)
             f.close()
-        print('translation completed,file saved in ['+newFile+']')
+        utils.printf('translation completed,file saved in ['+newFile+']')

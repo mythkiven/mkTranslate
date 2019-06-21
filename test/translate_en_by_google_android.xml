@@ -1,6 +1,0 @@
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <!-- tab -->
-    <string name="network_error">Network is not available, click screen to try again</string>
-    <string name="scan_qr_code_warn">Put the QR code into the box and you can scan it automatically.</string>
-    <string name="album_text">Album</string>
-</resources>
