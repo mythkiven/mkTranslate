@@ -1,3 +1,5 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- tab -->
     <string name="network_error">网络不可用，点击屏幕重试</string>
+    <string name="album_text">相册</string>
 </resources>

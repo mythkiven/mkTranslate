@@ -1,0 +1,5 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- tab -->
+    <string name="network_error">ネットワークが利用できません、もう一度クリックして画面をクリックしてください</string>
+    <string name="album_text">アルバム</string>
+</resources>

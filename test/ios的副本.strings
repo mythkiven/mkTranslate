@@ -1,2 +1,3 @@
 common_tips_error = "错误";
+/** ********************************************   */
 gw_input_title_signtx_usdt = "支付USDT手续费:%ld/%@"; /**"支付USDT手续费:%ld/%@"*/
