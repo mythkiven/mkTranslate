@@ -264,3 +264,6 @@ to ./translate_en_by_google_android.xml
 #### Language Code Table:
 ![](https://github.com/mythkiven/tmp/blob/master/resource/img/oc/language_code_table.png)
 
+参考
+- py-googletrans
+- Chinese-Article-Classification-based-on-own-corpus-via-TextCNN-and-GBDT

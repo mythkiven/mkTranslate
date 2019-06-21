@@ -304,3 +304,9 @@ a translation tool from e-commerce giant company Alibaba.
 
 #### Language Code Table:
 ![](https://github.com/mythkiven/tmp/blob/master/resource/img/oc/language_code_table.png)
+
+
+
+**reference**
+- py-googletrans
+- Chinese-Article-Classification-based-on-own-corpus-via-TextCNN-and-GBDT
