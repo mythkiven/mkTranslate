@@ -24,7 +24,28 @@
 
 ### 安装：
 
-`pip install mkTranslation`
+- mac or linux:
+
+```
+$ pip install mkTranslation
+```
+- windows:
+
+```
+>python3 -m pip install mkTranslation
+
+>python3 -m pip show mkTranslation
+    Name: mkTranslation
+    Version: 1.5.6
+    Location: c:\program files\python37\lib\site-packages
+    ...
+>cd c:\Program Files\Python37\Scripts && dir
+>copy translate C:\Windows
+>cd  C:\Windows && dir
+如果没有 translate 可执行文件，请直接下载[.exe 文件](https://github.com/mythkiven/mkTranslate/releases/tag/V1.6windows)，然后放到  C:\Windows 文件夹中，就可使用 translate 命令了
+
+```
+
 
 更新现有版本：`pip install --upgrade mkTranslation`
 

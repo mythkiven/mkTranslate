@@ -45,8 +45,12 @@ $ pip install mkTranslation
 >copy translate C:\Windows
 >cd  C:\Windows && dir  #  Will find the translate executable
 
+If you do not find the translate command, please download [the packaged exe file](https://github.com/mythkiven/mkTranslate/releases/tag/V1.6windows), and then put it in the C:\Windows directory, you can use translate in the terminal.
+
 Now you can use translate to translate
 ```
+
+
 
 Update existing version : `pip install --upgrade mkTranslation`
 
