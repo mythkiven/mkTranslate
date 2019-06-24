@@ -20,8 +20,6 @@
 - 支持 macos , ubuntu , Windows 系统(需要 python2.x 或 python3.x 环境)
 
 
-- **翻译之后，请务必人工核实，否则可能会因为语义上的差异带来理解困扰或政治风险。实际上任何一种翻译工具，都会有这种问题，请务必谨慎处理**
-
 ### 安装：
 
 - mac or linux:
@@ -284,6 +282,7 @@ to ./translate_en_by_google_android.xml
 
 ### 版本
 
+- V1.6.0 支持 windows 系统
 - V1.5.0 增加中文简体和中文繁体的互译
 - V1.4.0 增加网络检测，自动切换谷歌或有道翻译
 - V1.2.3 增加快速翻译 `$translate  'mkTranslate 支持多种语言的互译'`
@@ -303,3 +302,7 @@ to ./translate_en_by_google_android.xml
 
 #### Language Code Table:
 ![](https://github.com/mythkiven/tmp/blob/master/resource/img/oc/language_code_table.png)
+
+
+
+**翻译之后，请务必人工核实，否则可能会因为语义上的差异带来理解困扰或政治风险。实际上任何一种翻译工具，都会有这种问题，请务必谨慎处理**
