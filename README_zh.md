@@ -42,9 +42,9 @@ $ pip install mkTranslation
 >cd c:\Program Files\Python37\Scripts && dir
 >copy translate C:\Windows
 >cd  C:\Windows && dir
+```
 如果没有 translate 可执行文件，请直接下载[.exe 文件](https://github.com/mythkiven/mkTranslate/releases/tag/V1.6windows)，然后放到  C:\Windows 文件夹中，就可使用 translate 命令了
 
-```
 
 
 更新现有版本：`pip install --upgrade mkTranslation`
@@ -102,7 +102,25 @@ $translate -t 'Facebook发币，是伟大征途还是飞蛾扑火?' -d 'ja' -s '
 
 ###  Demo
 
-#### translate -p ./ios.strings -d 'pt'
+#### 繁体简体互译：translate -p ./chinese.txt -d 'zh-hans'
+
+from ./chinese.txt
+
+```
+歷史
+漢字简化可追溯至新文化運動中關於文字及語文教言和國家發展的討論。
+1932年中華民國教育部公佈《國音常用字匯》（見现代標準汉语），確定了現代中國國語標準音系，还收录了部分“破体”、“小字”等宋元以来“通俗的简体字”。
+```
+
+to ./translate_zh-hant_chinese.txt
+
+```
+历史
+汉字简化可追溯至新文化运动中关于文字及语文教言和国家发展的讨论。
+1932年中华民国教育部公布《国音常用字汇》（见现代标准汉语），确定了现代中国国语标准音系，还收录了部分“破体”、“小字”等宋元以来“通俗的简体字”。
+```
+
+#### strings文件翻译：translate -p ./ios.strings -d 'pt'
 
 from ./ios.strings
 
@@ -122,7 +140,7 @@ common_btn_sdk_pin_error = "O código PIN é inserido incorretamente, por favor,
 gw_input_title_signtx_usdt = "Pagar taxa de manuseio do USDT:%ld/%@"; /**"支付USDT手续费:%ld/%@"*/
 ```
 
-#### translate -p ./android.xml
+#### xml文件翻译：translate -p ./android.xml
 from ./android.xml
 
 ```
@@ -285,7 +303,3 @@ to ./translate_en_by_google_android.xml
 
 #### Language Code Table:
 ![](https://github.com/mythkiven/tmp/blob/master/resource/img/oc/language_code_table.png)
-
-参考
-- py-googletrans
-- Chinese-Article-Classification-based-on-own-corpus-via-TextCNN-and-GBDT

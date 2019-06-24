@@ -24,7 +24,7 @@
 
 **The default translation is google translation, you can specify other translation channels**
 
-- **After the translation, be sure to verify it manually, otherwise there may be confusion or political risk due to semantic differences. In fact, any translation tool will have this problem, please be careful to deal with**
+
 
 ### 2.Installation：
 
@@ -32,6 +32,8 @@
 ```
 $ pip install mkTranslation
 ```
+`error: command not found : translate` , [reference here](https://github.com/mythkiven/mkTranslate/issues/1)
+
 - windows:
 ```
 >python3 -m pip install mkTranslation
@@ -44,17 +46,18 @@ $ pip install mkTranslation
 >cd c:\Program Files\Python37\Scripts && dir #  Will find the translate executable
 >copy translate C:\Windows
 >cd  C:\Windows && dir  #  Will find the translate executable
+```
 
 If you do not find the translate command, please download [the packaged exe file](https://github.com/mythkiven/mkTranslate/releases/tag/V1.6windows), and then put it in the C:\Windows directory, you can use translate in the terminal.
 
 Now you can use translate to translate
-```
+
 
 
 
 Update existing version : `pip install --upgrade mkTranslation`
 
-`error: command not found : translate` , [reference here](https://github.com/mythkiven/mkTranslate/issues/1)
+
 
 
 ### 3.Usage：
@@ -169,6 +172,7 @@ to ./translate_en_by_google_android.xml
 
 ### 5.Version
 
+- V1.6.0 Support windows system
 - V1.5.0 Increase Chinese Simplified and Chinese Traditional Translation
 - V1.4.0 Increase the network detection switch, if google is available, use google translation first, otherwise it will use xc translation
 - V1.3.1 Fix bugs in previous versions
@@ -333,4 +337,6 @@ a translation tool from e-commerce giant company Alibaba.
 
 **reference**
 - py-googletrans
-- Chinese-Article-Classification-based-on-own-corpus-via-TextCNN-and-GBDT
+- Chinese-Article-Classification-based-on-own-corpus-via-TextCNN-and-GBDT 
+
+**After the translation, be sure to verify it manually, otherwise there may be confusion or political risk due to semantic differences. In fact, any translation tool will have this problem, please be careful to deal with**
