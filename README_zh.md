@@ -306,3 +306,6 @@ to ./translate_en_by_google_android.xml
 
 
 **翻译之后，请务必人工核实，否则可能会因为语义上的差异带来理解困扰或政治风险。实际上任何一种翻译工具，都会有这种问题，请务必谨慎处理**
+
+
+**更多工具参见：[mkBox](https://github.com/mythkiven/mkBox)**
