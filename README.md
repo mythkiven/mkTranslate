@@ -1,4 +1,15 @@
-# mkTranslate: support multi-language translation
+# mkTranslate | iOS & Android String File Translator
+
+Auto-translate iOS `Localizable.strings` and Android `strings.xml` — supports multi-language and simplified/traditional Chinese conversion.
+
+Keywords: ios localization tool, translate strings xml, i18n python, chinese translation ios, android strings translator
+
+## Quick Start
+
+```bash
+pip install mkTranslate
+mktranslate -h
+```
 
 [中文文档](https://github.com/mythkiven/mkTranslate/blob/master/README_zh.md)
 
