@@ -1,5 +1,15 @@
 # mkTranslate：支持多种语言的互译
 
+## 2.0 更新
+
+- 仅支持 **Python 3.9+**
+- 默认翻译通道改为 **有道**（`-c youdao`）
+- Google 翻译改用 **deep-translator**，修复 `tkk` 失效问题
+- 可选 `GOOGLE_TRANSLATE_API_KEY` 使用官方 Google Cloud 翻译
+- `.strings` 自动识别 **UTF-8 / UTF-16 BOM**
+- Android `strings.xml` 使用 **ElementTree** 解析，支持 CDATA
+- 新增 `--names` 只翻译指定 `name` 的 string
+- **`-c` 参数生效**，不再被 ping 逻辑覆盖
 
 更加便捷的翻译方式：
 
@@ -17,35 +27,26 @@
 - 支持 i18ns.com 聚合翻译
 - 会自动检测当前网络情况，从而决定使用谷歌还是有道翻译(有道翻译为了防IP封锁，使用3种渠道切换，所以速度会比谷歌慢一些，如果谷歌能用，将优先使用谷歌翻译)
 - 支持繁体，简体互译
-- 支持 macos , ubuntu , Windows 系统(需要 python2.x 或 python3.x 环境)
+- 支持 macos , ubuntu , Windows 系统(需要 **Python 3.9+** 环境)
 
 
 ### 安装：
 
 - mac or linux:
 
+```bash
+pip install -U mkTranslation
+python3 -m mkTranslation.cli -h
 ```
-$ pip install mkTranslation
-```
+
 - windows:
 
+```bash
+python -m pip install -U mkTranslation
+python -m mkTranslation.cli -h
 ```
->python3 -m pip install mkTranslation
 
->python3 -m pip show mkTranslation
-    Name: mkTranslation
-    Version: 1.5.6
-    Location: c:\program files\python37\lib\site-packages
-    ...
->cd c:\Program Files\Python37\Scripts && dir
->copy translate C:\Windows
->cd  C:\Windows && dir
-```
-如果没有 translate 可执行文件，请直接下载[.exe 文件](https://github.com/mythkiven/mkTranslate/releases/tag/V1.6windows)，然后放到  C:\Windows 文件夹中，就可使用 translate 命令了
-
-
-
-更新现有版本：`pip install --upgrade mkTranslation`
+更新现有版本：`pip install -U mkTranslation`
 
 如果安装后,终端不能识别`translate`命令，[参考这里](https://github.com/mythkiven/mkTranslate/issues/1)
 
@@ -56,19 +57,19 @@ $ pip install mkTranslation
 ```
 -p 指定要翻译文档的路径
 -t 指定要翻译的文本
--d 目标语言(缺省'en',繁体简体互译时，可以用's'替代'zh-hans',用't'替代'zh-hans',s=simple=简体，t=traditional=繁体)
--c 指定翻译渠道:[-c "google"] or [-c "youdao"] (缺省google)
--s 原始语言，有道翻译检测原始文本语言不太准确，翻译的结果会不太准确，所以使用有道翻译时，最好要指定原始的语言
+-d 目标语言(缺省'en'；简体:'s'；繁体:'t')
+-c 翻译渠道: youdao(默认)、google、auto
+-s 原始语言，使用有道时建议指定
+--names 仅翻译指定 Android string name，逗号分隔
 ```
 
 #### 翻译文档
 
-```
-translate -p ./chinese.txt  -d 's'                  # 文件转为简体。繁体:'t' 简体:'s'
-translate -p ./ios.strings                          # 默认使用 google 翻译，默认目标语言为 'en'
-translate -p ./android.xml -d 'pt'                  # 默认使用 google 翻译，目标语言为葡萄牙语
-translate -p ./test.txt -d 'pt' -c 'youdao' -s 'ja' # 使用有道翻译，目标语言为日语
-自动在原始文件目录生成翻译后的文件  translate_pt_android.xml translate_en_ios.strings translate_ja_test.txt
+```bash
+translate -p ./chinese.txt -d s
+translate -p ./ios.strings -d en -c youdao -s zh
+translate -p ./android.xml -d pt -c youdao -s zh
+translate -p ./android.xml -d en --names "app_name,login_title" -s zh
 ```
 
 #### 翻译文本

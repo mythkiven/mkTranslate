@@ -4,11 +4,22 @@ Auto-translate iOS `Localizable.strings` and Android `strings.xml` — supports 
 
 Keywords: ios localization tool, translate strings xml, i18n python, chinese translation ios, android strings translator
 
+## What's New in 2.0
+
+- **Python 3.9+ only** (Python 2 support removed)
+- **Default channel: Youdao** (`-c youdao`) for better reliability in CN networks
+- **Google via `deep-translator`** (no more broken `tkk` scraping)
+- Optional **Google Cloud API** via `GOOGLE_TRANSLATE_API_KEY`
+- **UTF-8 / UTF-16 BOM auto-detection** for `.strings` files
+- **Real XML parser** for Android `strings.xml` (CDATA / nested text supported)
+- **`--names` filter** to translate only selected Android string keys
+- **`-c` flag is respected** (no longer overridden by ping logic)
+
 ## Quick Start
 
 ```bash
-pip install mkTranslate
-mktranslate -h
+pip install -U mkTranslation
+translate -h
 ```
 
 [中文文档](https://github.com/mythkiven/mkTranslate/blob/master/README_zh.md)
@@ -20,53 +31,41 @@ mktranslate -h
 
 ### 1.Features
 
-- translated text
-- translate .string file
-- translate .xml file
-- translate .txt file
-- support google translation
-- support youdao translation
-- support i18ns.com translation
-- Check if the network is available, so choose google or Youdao translation channel
-- 支持繁体，简体互译
-- Support macos , ubuntu , Windows operating system(requires python2.x or python3.x environment)
-- Support alfred (will be added)
-- more features will be added..
+- translate text / `.strings` / `.xml` / `.txt`
+- Google translation (`deep-translator`) + optional Cloud API key
+- Youdao translation (default)
+- i18ns.com cache lookup
+- simplified ↔ traditional Chinese conversion (offline)
+- UTF-8 / UTF-16 encoding auto-detection
+- Android XML parsing via `ElementTree`
+- translate only selected Android string names via `--names`
+- macOS / Linux / Windows (Python 3.9+)
 
-**The default translation is google translation, you can specify other translation channels**
+**Default channel is Youdao. Use `-c google` when Google is reachable.**
 
 
 
 ### 2.Installation：
 
 - mac or linux:
-```
-$ pip install mkTranslation
+```bash
+pip install -U mkTranslation
+python3 -m mkTranslation.cli -h
 ```
 `error: command not found : translate` , [reference here](https://github.com/mythkiven/mkTranslate/issues/1)
 
 - windows:
-```
->python3 -m pip install mkTranslation
-
->python3 -m pip show mkTranslation
-    Name: mkTranslation
-    Version: 1.5.6
-    Location: c:\program files\python37\lib\site-packages
-    ...
->cd c:\Program Files\Python37\Scripts && dir #  Will find the translate executable
->copy translate C:\Windows
->cd  C:\Windows && dir  #  Will find the translate executable
+```bash
+python -m pip install -U mkTranslation
+python -m mkTranslation.cli -h
 ```
 
-If you do not find the translate command, please download [the packaged exe file](https://github.com/mythkiven/mkTranslate/releases/tag/V1.6windows), and then put it in the C:\Windows directory, you can use translate in the terminal.
+If `translate` is not on PATH, use:
+```bash
+python -m mkTranslation.cli -p ./ios.strings -d en -c youdao -s zh
+```
 
-Now you can use translate to translate
-
-
-
-
-Update existing version : `pip install --upgrade mkTranslation`
+Update existing version: `pip install -U mkTranslation`
 
 
 
@@ -77,21 +76,29 @@ Update existing version : `pip install --upgrade mkTranslation`
 ```
 -p  path to the translated document
 -t  translated text
--d  target language (default 'en',繁体简体互译时，可以用's'替代'zh-hans',用't'替代'zh-hans',s=simple=简体，t=traditional=繁体)
--c  translation channel: [-c "google"] or [-c "youdao"] (default google)
--s  original language, when using 'youdao' translation, it is best to specify the original language
+-d  target language (default 'en'; 简体:'s'; 繁体:'t')
+-c  translation channel: youdao (default), google, auto
+-s  source language (recommended for youdao)
+--names  comma-separated Android string names (xml only)
+```
+
+Environment variables:
+```
+GOOGLE_TRANSLATE_API_KEY=...   # optional official Google Cloud Translation
+MKTRANSLATE_CHANNEL=youdao     # optional default channel
 ```
 
 #### Translating documents
 
+```bash
+translate -p ./chinese.txt -d s
+translate -p ./ios.strings -d en -c youdao -s zh
+translate -p ./android.xml -d pt -c youdao -s zh
+translate -p ./android.xml -d en --names "app_name,login_title" -s zh
 ```
-translate -p ./chinese.txt  -d 's'                  # 文件转为简体。繁体:'t' 简体:'s'
-translate -p ./ios.strings                          # Use google translation by default （the default target language is 'en'）
-translate -p ./android.xml -d 'pt'                  # Use google translation by default (the default target language is 'pt'）
-translate -p ./test.txt -d 'zh' -c 'youdao' -s 'ja' # Use 'youdao' translation  (the default target language is 'ja'）
 
-Automatically generate translated files in the original file directory : translate_pt_android.xml translate_en_ios.strings translate_ja_test.txt
-```
+Automatically generate translated files in the original file directory:
+`translate_pt_by_youdao_android.xml`, `translate_en_by_youdao_ios.strings`, etc.
 
 #### Translated text
 

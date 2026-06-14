@@ -1,183 +1,304 @@
-# -*- coding:utf-8 -*-
+# -*- coding: utf-8 -*-
+"""Core translation orchestration for strings, xml, and text files."""
+
+from __future__ import annotations
+
+import json
 import os
 import re
 import sys
-import json
-import string
+import xml.etree.ElementTree as ET
+
 import requests
-from mkTranslation import utils
-from mkTranslation.utils import  isWindows,pathSeparator
-from mkTranslation import network
+
+from mkTranslation import network, utils
+from mkTranslation.io_utils import read_lines, write_text
+from mkTranslation.lang_utils import normalize_dest
 from mkTranslation.translate_chinese import mkConverter
 from mkTranslation.translate_google import mkGoogleTranslator
 from mkTranslation.translate_youdao import mkYouDaoTranslator
-sys.path.append("..")
 
-class mkTranslator(object):
+pathSeparator = os.sep
+STRINGS_PATTERN = re.compile(r'=\s*"(.+?)"\s*;')
 
-    def get_file(self,path):
-        if(not os.path.exists(path)):
-            pathArray = path.split(pathSeparator)
-            fileName = pathArray[len(pathArray)-1]
-            return os.path.join(os.path.abspath('.'),fileName)
-        return path
 
-    def translate_i18ns(self,dest,word,language):
-        if(not language):
-            return 'null'
-        tlanguage ='translations.'+language
+class mkTranslator:
+    def get_file(self, path: str) -> str:
+        if os.path.exists(path):
+            return path
+        file_name = os.path.basename(path)
+        return os.path.join(os.path.abspath("."), file_name)
+
+    def translate_i18ns(self, dest: str, word: str, language: str | None) -> str:
+        if not language:
+            return "null"
         uri = "https://i18ns.com/translate/_search"
-        headers = {"Content-Type":"application/json","Authorization":"Basic aTE4bnM6KioqKioq","user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:63.0) Gecko/20100101 Firefox/63.0"}
-        body = json.dumps({"query": {"simple_query_string":{"query":word,"fields":[tlanguage],"minimum_should_match": "100%","default_operator": "AND","analyzer": "smartcn"}}}) 
-        response = requests.post(url=uri,data=body,headers=headers,timeout=120)
-        if response.status_code != 200 :
-            return 'null'
-        txd = []
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": "Basic aTE4bnM6KioqKioq",
+            "user-agent": "mkTranslate/2.0",
+        }
+        body = json.dumps(
+            {
+                "query": {
+                    "simple_query_string": {
+                        "query": word,
+                        "fields": [f"translations.{language}"],
+                        "minimum_should_match": "100%",
+                        "default_operator": "AND",
+                        "analyzer": "smartcn",
+                    }
+                }
+            }
+        )
         try:
-            tx=json.loads(response.text,encoding="UTF-8")
-            txd=tx['hits']['hits'][0]['_source']['translations']
-        except Exception as e:
-            return 'null'
-        if(len(txd)>1):
-            isExist = False
-            for x in txd:
-                if(language == x['lang']):
-                    orit = json.dumps(x[language],ensure_ascii=False)
-                    orit = orit.replace('[','').replace(']','').replace('"','')
-                    if(word == orit):
-                        isExist = True
-            if(isExist):
-                for x in txd:
-                    if(dest == x['lang']):
-                        utils.printf('use \'https://i18ns.com/\' translation '+word+' to '+x[dest][0] + ',others use google translation')
-                        return x[dest][0]+''
-        return 'null'
+            response = requests.post(url=uri, data=body, headers=headers, timeout=120)
+            if response.status_code != 200:
+                return "null"
+            payload = response.json()
+            translations = payload["hits"]["hits"][0]["_source"]["translations"]
+        except Exception:
+            return "null"
 
-    def translate(self,word,destination,language,channel):
-        if(len(word)==0):
-            return 'null'
+        if len(translations) <= 1:
+            return "null"
+
+        source_values = [
+            json.dumps(item[language], ensure_ascii=False)
+            .replace("[", "")
+            .replace("]", "")
+            .replace('"', "")
+            for item in translations
+            if language in item
+        ]
+        if word not in source_values:
+            return "null"
+
+        for item in translations:
+            if dest in item:
+                utils.printf(
+                    f"use 'https://i18ns.com/' translation {word} to {item[dest][0]}"
+                )
+                return str(item[dest][0])
+        return "null"
+
+    def translate(self, word: str, destination: str, language: str | None, channel: str) -> str:
+        if not word:
+            return ""
+        destination = normalize_dest(destination)
+
         try:
-            tx = self.translate_i18ns(destination,word,language)
-            if(tx != 'null'):
-                return tx
-        except Exception as e:
-            utils.printf('')
-        if(destination.lower() == 'zh-hant'):
-            return mkConverter('zh-hant').convert(word)
-        elif(destination.lower() == 'zh-hans'):
-            return mkConverter('zh-hans').convert(word)
-        else:
+            cached = self.translate_i18ns(destination, word, language)
+            if cached != "null":
+                return cached
+        except Exception:
             pass
 
-        if(channel == 'google'):
-            return mkGoogleTranslator().translate(word, dest=destination).text
-        else:
-            return mkYouDaoTranslator().translate(word,destination,language)
+        if destination == "zh-hant":
+            return mkConverter("zh-hant").convert(word)
+        if destination == "zh-hans":
+            return mkConverter("zh-hans").convert(word)
 
-    def fix_tx(self,txt):
-        if(txt.find('% ld')!=-1 or txt.find('% @')!=-1):
-            tsing = re.search(r'%\s*(@|ld)\s*/\s*%\s*(ld|@)',txt)
-            if(tsing):
-                tsing = tsing.group(0)
-                txt = txt.replace(tsing,tsing.replace(' ',''))
+        if channel == "google":
+            return self._translate_with_channel(word, destination, language, "google")
+        return self._translate_with_channel(word, destination, language, "youdao")
+
+    def _translate_with_channel(
+        self,
+        word: str,
+        destination: str,
+        language: str | None,
+        channel: str,
+    ) -> str:
+        alternate = "google" if channel == "youdao" else "youdao"
+        for current in (channel, alternate):
+            try:
+                if current == "google":
+                    return mkGoogleTranslator().translate(
+                        word, dest=destination, src=language or "auto"
+                    ).text
+                return mkYouDaoTranslator().translate(word, destination, language)
+            except Exception as exc:
+                utils.printf(f"{current} translation failed: {exc}")
+        raise RuntimeError(f"Translation failed for: {word[:80]}")
+
+    def fix_tx(self, txt: str) -> str:
+        if "% ld" in txt or "% @" in txt:
+            match = re.search(r"%\s*(@|ld)\s*/\s*%\s*(ld|@)", txt)
+            if match:
+                fixed = match.group(0).replace(" ", "")
+                txt = txt.replace(match.group(0), fixed)
         return txt
 
-    def write_tx(self,oldfile,newfile,reg,creg,des,lan,channel):
-        if(not isWindows):
-            f = open(oldfile)
-        else:
-            f = open(oldfile, encoding='UTF-8')
-        line = f.readline()
-        txd = ''
-        while line:
-            line = line.replace('\n','')
-            if(len(line)==0):
-                line = f.readline()
+    def _should_translate_name(self, name: str | None, names_filter: set[str] | None) -> bool:
+        if not names_filter:
+            return True
+        return bool(name and name in names_filter)
+
+    def _element_text(self, element: ET.Element) -> str:
+        parts = [element.text or ""]
+        for child in list(element):
+            if child.text:
+                parts.append(child.text)
+            if child.tail:
+                parts.append(child.tail)
+        return "".join(parts).strip()
+
+    def _set_element_text(self, element: ET.Element, value: str) -> None:
+        for child in list(element):
+            element.remove(child)
+        element.text = value
+
+    def translate_xml(
+        self,
+        filepath: str,
+        newfile: str,
+        destination: str,
+        sourcelanguage: str | None,
+        channel: str,
+        names_filter: set[str] | None = None,
+    ) -> None:
+        tree = ET.parse(filepath)
+        root = tree.getroot()
+        for element in root.iter("string"):
+            name = element.attrib.get("name")
+            if not self._should_translate_name(name, names_filter):
+                utils.printf(f"skip name={name}")
                 continue
-            originLine = line
-            utils.printf('original:'+originLine)
-            line = re.findall(reg,line)
-            if(len(line) and line[0]):
-                txc = self.translate(line[0],des,lan,channel)
-                if(len(txc)):
-                    originLine = re.sub(reg,creg.replace('content',txc), originLine)
+            original = self._element_text(element)
+            if not original:
+                utils.printf(f"skip empty string name={name}")
+                continue
+            utils.printf(f"original[{name}]: {original}")
+            translated = self.translate(original, destination, sourcelanguage, channel)
+            translated = self.fix_tx(translated)
+            self._set_element_text(element, translated)
+            utils.printf(f"translated[{name}]: {translated}")
+            utils.printf("-----")
+
+        if hasattr(ET, "indent"):
+            ET.indent(tree, space="    ")
+        tree.write(newfile, encoding="utf-8", xml_declaration=True)
+
+    def translate_strings(
+        self,
+        filepath: str,
+        newfile: str,
+        destination: str,
+        sourcelanguage: str | None,
+        channel: str,
+    ) -> None:
+        lines_out: list[str] = []
+        for raw_line in read_lines(filepath):
+            line = raw_line.rstrip("\n")
+            if not line.strip():
+                lines_out.append(raw_line)
+                continue
+
+            origin_line = line
+            utils.printf(f"original:{origin_line}")
+            match = STRINGS_PATTERN.search(line)
+            if match:
+                translated = self.translate(match.group(1), destination, sourcelanguage, channel)
+                if translated:
+                    origin_line = STRINGS_PATTERN.sub(f'="{translated}"', line, count=1)
                 else:
-                    utils.printf('translate fail:' + line)
-            elif(reg==creg==r'text'):
-                originLine = self.translate(originLine,des,lan,channel)
+                    utils.printf(f"translate fail: {match.group(1)}")
             else:
-                utils.printf('skip: '+originLine)
-            originLine = self.fix_tx(originLine)
-            utils.printf('translated:'+originLine)
-            txd += originLine + '\n'
-            utils.printf('-----')
-            line = f.readline()
-        f = open(newfile,'w+')
-        f.write(txd)
-        f.close()
-    def log(self,channel,dest):
-        if(dest == 'zh-hant' or dest == 'zh-hans'):
+                utils.printf(f"skip: {origin_line}")
+
+            origin_line = self.fix_tx(origin_line)
+            utils.printf(f"translated:{origin_line}")
+            lines_out.append(origin_line + "\n")
+            utils.printf("-----")
+
+        write_text(newfile, "".join(lines_out))
+
+    def translate_text_file(
+        self,
+        filepath: str,
+        newfile: str,
+        destination: str,
+        sourcelanguage: str | None,
+        channel: str,
+    ) -> None:
+        lines_out: list[str] = []
+        for raw_line in read_lines(filepath):
+            line = raw_line.rstrip("\n")
+            if not line:
+                lines_out.append("\n")
+                continue
+            utils.printf(f"original:{line}")
+            translated = self.translate(line, destination, sourcelanguage, channel)
+            translated = self.fix_tx(translated)
+            utils.printf(f"translated:{translated}")
+            lines_out.append(translated + "\n")
+            utils.printf("-----")
+        write_text(newfile, "".join(lines_out))
+
+    def log(self, channel: str, dest: str) -> None:
+        if dest in {"zh-hant", "zh-hans"}:
             return
-        if(channel == 'None'):
-            utils.printf('[No network, no translation!]')
-            sys.exit()
-        elif(channel == 'google'):
-            utils.printf('[Use google translation]')
+        if channel == "None":
+            utils.printf("[No network, no translation!]")
+            sys.exit(1)
+        if channel == "google":
+            utils.printf("[Use google translation]")
         else:
-            utils.printf('[Use youdao translation]')
+            utils.printf("[Use youdao translation]")
 
-    def translate_text(self,text, destination,sourcelanguage,channel):
-
+    def translate_text(
+        self,
+        text: str,
+        destination: str,
+        sourcelanguage: str | None,
+        channel: str,
+    ) -> None:
         channel = network.select_network(channel)
-        self.log(channel,destination)
-
-        if(channel == 'None'):
-            pass
-        elif(channel == 'google'):
-            utils.printf(mkGoogleTranslator().translate_text(text, dest=destination).text)
+        destination = normalize_dest(destination)
+        self.log(channel, destination)
+        if channel == "google":
+            utils.printf(mkGoogleTranslator().translate(text, dest=destination).text)
         else:
-            utils.printf(mkYouDaoTranslator().translate(text,destination,sourcelanguage))
+            utils.printf(mkYouDaoTranslator().translate(text, destination, sourcelanguage))
 
-    def translate_doc(self,filepath, destination,sourcelanguage,channel):
+    def translate_doc(
+        self,
+        filepath: str,
+        destination: str,
+        sourcelanguage: str | None,
+        channel: str,
+        names_filter: set[str] | None = None,
+    ) -> None:
         channel = network.select_network(channel)
-        self.log(channel,destination)
+        destination = normalize_dest(destination)
+        self.log(channel, destination)
 
         filepath = self.get_file(filepath)
-        pathArray = filepath.split(pathSeparator)
+        old_file_name = os.path.basename(filepath)
+        file_type = old_file_name.rsplit(".", 1)[-1].lower()
+        current_path = os.path.dirname(filepath) or os.path.abspath(".")
 
-        oldFileName = pathArray[len(pathArray)-1]
-        fileType = oldFileName.split('.')[len(oldFileName.split('.'))-1]
-        currentPath =  filepath.replace(pathSeparator + oldFileName,'') if len(pathArray)>2 else  os.path.abspath('.')
-
-        newFile = ''
-        if(destination == 'zh-hant' or destination == 'zh-hans'):
-            newFile = os.path.join(currentPath, 'translate_'+destination+'_'+oldFileName)
+        if destination in {"zh-hant", "zh-hans"}:
+            new_file = os.path.join(current_path, f"translate_{destination}_{old_file_name}")
         else:
-            newFile = os.path.join(currentPath, 'translate_'+destination+'_by_'+channel+'_'+oldFileName)
-        txd = ''
-        utils.printf('translating..')
+            new_file = os.path.join(current_path, f"translate_{destination}_by_{channel}_{old_file_name}")
 
-        # text
-        if(fileType.lower() == 'text' or  fileType.lower() == 'txt'):
-            self.write_tx(filepath,newFile,r"text",r"text",destination,sourcelanguage,channel)
-        # oc:xx.string
-        elif(fileType.lower() == 'strings'):
-            self.write_tx(filepath,newFile,r"=\s*\"(.+?)\"\s*;",'="'+'content'+'";',destination,sourcelanguage,channel)
-        # java:xx.xml
-        elif(fileType.lower() == 'xml'):
-            self.write_tx(filepath,newFile,r">\s*(.+?)\s*</string>",'>'+'content'+'</string>',destination,sourcelanguage,channel)
+        utils.printf("translating..")
+        if file_type in {"text", "txt"}:
+            self.translate_text_file(filepath, new_file, destination, sourcelanguage, channel)
+        elif file_type == "strings":
+            self.translate_strings(filepath, new_file, destination, sourcelanguage, channel)
+        elif file_type == "xml":
+            self.translate_xml(
+                filepath,
+                new_file,
+                destination,
+                sourcelanguage,
+                channel,
+                names_filter=names_filter,
+            )
         else:
-            if(not isWindows):
-                f = open(filepath)
-            else:
-                f = open(filepath, encoding='UTF-8')
-            line = f.readline()
-            while line:
-                if(len(line)):
-                    txd += self.translate(line,destination,sourcelanguage,channel)+'\n'
-                line = f.readline()
-            f.close()
-            f = open(newFile,'w+')
-            f.write(txd)
-            f.close()
-        utils.printf('translation completed,file saved in ['+newFile+']')
+            self.translate_text_file(filepath, new_file, destination, sourcelanguage, channel)
+
+        utils.printf(f"translation completed,file saved in [{new_file}]")

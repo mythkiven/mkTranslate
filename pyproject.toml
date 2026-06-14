@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mkTranslation"
+version = "2.0.0"
+description = "Auto-translate iOS Localizable.strings and Android strings.xml"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "MythKiven", email = "mythkiven@qq.com" }]
+requires-python = ">=3.9"
+keywords = ["translate", "i18n", "ios", "android", "localization", "strings"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Localization",
+]
+dependencies = [
+    "requests>=2.28",
+    "deep-translator>=1.11.4",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0"]
+
+[project.scripts]
+translate = "mkTranslation.cli:main"
+trans = "mkTranslation.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/mythkiven/mkTranslate"
+Repository = "https://github.com/mythkiven/mkTranslate"
+Issues = "https://github.com/mythkiven/mkTranslate/issues"
+
+[tool.setuptools.packages.find]
+exclude = ["test*"]
+
+[tool.setuptools]
+py-modules = []

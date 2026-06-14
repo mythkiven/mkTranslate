@@ -1,40 +1,30 @@
 # -*- coding: utf-8 -*-
-from __future__ import print_function
+from __future__ import annotations
+
 import json
-import ast
-import sys
+import re
+
 import requests
 
 
-try:
-    from urllib.parse import quote
-except:
-    from urllib import quote
-
-PY3 = sys.version_info > (3, )
-unicode = str if PY3 else unicode
-isWindows = True if sys.platform == 'win32' else False
-pathSeparator = """\\""" if isWindows else '/'
-
 def build_params(query, src, dest, token):
-    params = {
-        'client': 'webapp',
-        'sl': src,
-        'tl': dest,
-        'hl': dest,
-        'dt': ['at', 'bd', 'ex', 'ld', 'md', 'qca', 'rw', 'rm', 'ss', 't'],
-        'ie': 'UTF-8',
-        'oe': 'UTF-8',
-        'otf': 1,
-        'ssel': 0,
-        'tsel': 0,
-        'tk': token,
-        'q': query,
+    return {
+        "client": "webapp",
+        "sl": src,
+        "tl": dest,
+        "hl": dest,
+        "dt": ["at", "bd", "ex", "ld", "md", "qca", "rw", "rm", "ss", "t"],
+        "ie": "UTF-8",
+        "oe": "UTF-8",
+        "otf": 1,
+        "ssel": 0,
+        "tsel": 0,
+        "tk": token,
+        "q": query,
     }
-    return params
 
 
-def legacy_format_json(original):
+def legacy_format_json(original: str):
     states = []
     text = original
     for i, pos in enumerate(re.finditer('"', text)):
@@ -43,10 +33,10 @@ def legacy_format_json(original):
             nxt = text.find('"', p)
             states.append((p, text[p:nxt]))
 
-    while text.find(',,') > -1:
-        text = text.replace(',,', ',null,')
-    while text.find('[,') > -1:
-        text = text.replace('[,', '[null,')
+    while text.find(",,") > -1:
+        text = text.replace(",,", ",null,")
+    while text.find("[,") > -1:
+        text = text.replace("[,", "[null,")
 
     for i, pos in enumerate(re.finditer('"', text)):
         p = pos.start() + 1
@@ -55,18 +45,18 @@ def legacy_format_json(original):
             nxt = text.find('"', p)
             text = text[:p] + states[j][1] + text[nxt:]
 
-    converted = json.loads(text)
-    return converted
+    return json.loads(text)
 
-def printf(text):
+
+def printf(text: str) -> None:
     print(text)
 
-def format_json(original):
+
+def format_json(original: str):
     try:
-        converted = json.loads(original)
+        return json.loads(original)
     except ValueError:
-        converted = legacy_format_json(original)
-    return converted
+        return legacy_format_json(original)
 
 
 def rshift(val, n):
