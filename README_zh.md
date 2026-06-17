@@ -1,5 +1,13 @@
 # mkTranslate：支持多种语言的互译
 
+## 2.1 更新
+
+- **XML 内嵌 HTML 保留**：`<font>` 等标签不丢失，只翻译文本节点
+- **`.strings` 转义修复**：翻译结果正确转义 `"`、`\`、换行
+- **翻译重试**：失败自动重试后再切换通道
+- **i18ns.com 默认关闭**：需设置 `MKTRANSLATE_I18NS=1` 才启用
+- **测试不依赖外网**：CI 更稳定
+
 ## 2.0 更新
 
 - 仅支持 **Python 3.9+**
@@ -20,7 +28,7 @@
 **推荐从 GitHub 安装 2.0**（PyPI 最新仍为 1.6.1）：
 
 ```bash
-pip install "git+https://github.com/mythkiven/mkTranslate.git@v2.0.0"
+pip install "git+https://github.com/mythkiven/mkTranslate.git@v2.1.0"
 translate -h
 ```
 
@@ -279,6 +287,7 @@ to ./translate_en_by_google_android.xml
 
 ### 版本
 
+- **V2.1.0** (2026) 保留 XML HTML、`.strings` 转义、重试、i18ns 可选 — [CHANGELOG](CHANGELOG.md)
 - **V2.0.0** (2026) Python 3.9+、deep-translator、ElementTree、UTF-16、`--names` — [CHANGELOG](CHANGELOG.md)
 - V1.6.0 支持 windows 系统
 - V1.5.0 增加中文简体和中文繁体的互译
@@ -313,7 +322,8 @@ to ./translate_en_by_google_android.xml
 | `.strings` 编码报错 | 升级到 2.0，自动识别 UTF-16 BOM |
 | Google 翻译失败 | 使用 `-c youdao` 或配置 `GOOGLE_TRANSLATE_API_KEY` |
 | Android XML 被跳过 | 升级到 2.0；可用 `--names` 指定 key |
-| PyPI 装到旧版 | PyPI 为 1.6.1，请从 GitHub 安装 2.0 |
+| PyPI 装到旧版 | PyPI 为 1.6.1，请从 GitHub 安装 2.1 |
+| i18ns 未生效 | 2.1 起默认关闭，设置 `MKTRANSLATE_I18NS=1` 启用 |
 
 **更多工具参见：[mkBox](https://github.com/mythkiven/mkBox)**
 

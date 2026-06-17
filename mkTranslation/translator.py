@@ -7,6 +7,7 @@ import json
 import os
 import re
 import sys
+import time
 import xml.etree.ElementTree as ET
 
 import requests
@@ -14,12 +15,13 @@ import requests
 from mkTranslation import network, utils
 from mkTranslation.io_utils import read_lines, write_text
 from mkTranslation.lang_utils import normalize_dest
+from mkTranslation.strings_utils import STRINGS_VALUE_PATTERN, replace_strings_value, unescape_strings_value
 from mkTranslation.translate_chinese import mkConverter
 from mkTranslation.translate_google import mkGoogleTranslator
 from mkTranslation.translate_youdao import mkYouDaoTranslator
+from mkTranslation.xml_utils import element_visible_text, translate_element_preserving_markup
 
 pathSeparator = os.sep
-STRINGS_PATTERN = re.compile(r'=\s*"(.+?)"\s*;')
 
 
 class mkTranslator:
@@ -30,13 +32,15 @@ class mkTranslator:
         return os.path.join(os.path.abspath("."), file_name)
 
     def translate_i18ns(self, dest: str, word: str, language: str | None) -> str:
+        if os.getenv("MKTRANSLATE_I18NS", "").strip().lower() not in {"1", "true", "yes"}:
+            return "null"
         if not language:
             return "null"
         uri = "https://i18ns.com/translate/_search"
         headers = {
             "Content-Type": "application/json",
             "Authorization": "Basic aTE4bnM6KioqKioq",
-            "user-agent": "mkTranslate/2.0",
+            "user-agent": "mkTranslate/2.1",
         }
         body = json.dumps(
             {
@@ -109,17 +113,23 @@ class mkTranslator:
         destination: str,
         language: str | None,
         channel: str,
+        retries: int = 2,
     ) -> str:
         alternate = "google" if channel == "youdao" else "youdao"
         for current in (channel, alternate):
-            try:
-                if current == "google":
-                    return mkGoogleTranslator().translate(
-                        word, dest=destination, src=language or "auto"
-                    ).text
-                return mkYouDaoTranslator().translate(word, destination, language)
-            except Exception as exc:
-                utils.printf(f"{current} translation failed: {exc}")
+            for attempt in range(retries + 1):
+                try:
+                    if current == "google":
+                        return mkGoogleTranslator().translate(
+                            word, dest=destination, src=language or "auto"
+                        ).text
+                    return mkYouDaoTranslator().translate(word, destination, language)
+                except Exception as exc:
+                    if attempt < retries:
+                        time.sleep(0.5 * (attempt + 1))
+                        continue
+                    utils.printf(f"{current} translation failed: {exc}")
+                    break
         raise RuntimeError(f"Translation failed for: {word[:80]}")
 
     def fix_tx(self, txt: str) -> str:
@@ -134,20 +144,6 @@ class mkTranslator:
         if not names_filter:
             return True
         return bool(name and name in names_filter)
-
-    def _element_text(self, element: ET.Element) -> str:
-        parts = [element.text or ""]
-        for child in list(element):
-            if child.text:
-                parts.append(child.text)
-            if child.tail:
-                parts.append(child.tail)
-        return "".join(parts).strip()
-
-    def _set_element_text(self, element: ET.Element, value: str) -> None:
-        for child in list(element):
-            element.remove(child)
-        element.text = value
 
     def translate_xml(
         self,
@@ -165,15 +161,17 @@ class mkTranslator:
             if not self._should_translate_name(name, names_filter):
                 utils.printf(f"skip name={name}")
                 continue
-            original = self._element_text(element)
+            original = element_visible_text(element)
             if not original:
                 utils.printf(f"skip empty string name={name}")
                 continue
             utils.printf(f"original[{name}]: {original}")
-            translated = self.translate(original, destination, sourcelanguage, channel)
-            translated = self.fix_tx(translated)
-            self._set_element_text(element, translated)
-            utils.printf(f"translated[{name}]: {translated}")
+
+            def do_translate(text: str) -> str:
+                return self.fix_tx(self.translate(text, destination, sourcelanguage, channel))
+
+            translate_element_preserving_markup(element, do_translate)
+            utils.printf(f"translated[{name}]: {element_visible_text(element)}")
             utils.printf("-----")
 
         if hasattr(ET, "indent"):
@@ -197,13 +195,18 @@ class mkTranslator:
 
             origin_line = line
             utils.printf(f"original:{origin_line}")
-            match = STRINGS_PATTERN.search(line)
+            match = STRINGS_VALUE_PATTERN.search(line)
             if match:
-                translated = self.translate(match.group(1), destination, sourcelanguage, channel)
+                source_value = unescape_strings_value(match.group(1))
+                translated = self.translate(source_value, destination, sourcelanguage, channel)
                 if translated:
-                    origin_line = STRINGS_PATTERN.sub(f'="{translated}"', line, count=1)
+                    replaced = replace_strings_value(line, translated)
+                    if replaced:
+                        origin_line = replaced
+                    else:
+                        utils.printf(f"translate fail: {source_value}")
                 else:
-                    utils.printf(f"translate fail: {match.group(1)}")
+                    utils.printf(f"translate fail: {source_value}")
             else:
                 utils.printf(f"skip: {origin_line}")
 

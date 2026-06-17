@@ -4,6 +4,16 @@ Auto-translate iOS `Localizable.strings` and Android `strings.xml` — supports 
 
 Keywords: ios localization tool, translate strings xml, i18n python, chinese translation ios, android strings translator
 
+## What's New in 2.1
+
+- **XML inline HTML preserved** — `<font>` and other tags are kept; only text nodes are translated
+- **`.strings` escaping** — translated values correctly escape `"`, `\`, newlines
+- **Translation retries** — auto-retry with backoff before channel fallback
+- **i18ns.com opt-in** — disabled by default; set `MKTRANSLATE_I18NS=1` to enable
+- **Offline-friendly tests** — unit tests no longer require live translation APIs
+
+See [CHANGELOG.md](CHANGELOG.md) for full history.
+
 ## What's New in 2.0
 
 - **Python 3.9+ only** (Python 2 support removed)
@@ -20,7 +30,7 @@ Keywords: ios localization tool, translate strings xml, i18n python, chinese tra
 **Install from GitHub** (recommended — v2.0 is on GitHub; PyPI latest is still 1.6.1):
 
 ```bash
-pip install "git+https://github.com/mythkiven/mkTranslate.git@v2.0.0"
+pip install "git+https://github.com/mythkiven/mkTranslate.git@v2.1.0"
 translate -h
 ```
 
@@ -67,7 +77,7 @@ python3 -m mkTranslation.cli -h
 **推荐：从 GitHub 安装 2.0**（PyPI 最新仍为 1.6.1，2.0 请用 GitHub）：
 
 ```bash
-pip install "git+https://github.com/mythkiven/mkTranslate.git@v2.0.0"
+pip install "git+https://github.com/mythkiven/mkTranslate.git@v2.1.0"
 translate -h
 ```
 
@@ -212,6 +222,7 @@ to ./translate_en_by_google_android.xml
 
 ### 5.Version
 
+- **V2.1.0** (2026) XML HTML preserve, `.strings` escape, retry, i18ns opt-in — [Changelog](CHANGELOG.md)
 - **V2.0.0** (2026) Python 3.9+, deep-translator, ElementTree XML, UTF-16 BOM, `--names`, channel fallback — [Changelog](CHANGELOG.md)
 - V1.6.0 Support windows system
 - V1.5.0 Increase Chinese Simplified and Chinese Traditional Translation
@@ -390,6 +401,6 @@ a translation tool from e-commerce giant company Alibaba.
 | `UnicodeDecodeError` on `.strings` | Upgrade to 2.0 — auto-detects UTF-16 BOM |
 | Google translation fails | Use `-c youdao` or set `GOOGLE_TRANSLATE_API_KEY` |
 | Android XML strings skipped | Upgrade to 2.0 — uses ElementTree; try `--names` for partial translate |
-| Installed old version from PyPI | PyPI is 1.6.1; install from GitHub: `pip install "git+https://github.com/mythkiven/mkTranslate.git@v2.0.0"` |
+| Installed old version from PyPI | PyPI is 1.6.1; install from GitHub: `pip install "git+https://github.com/mythkiven/mkTranslate.git@v2.1.0"` |
 
 **More tools:** [mkBox](https://github.com/mythkiven/mkBox)

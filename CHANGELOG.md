@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.1.0] - 2026-06-14
+
+### Added
+- `strings_utils.py` — proper `.strings` escape/unescape for `"`, `\`, `\n`, `\t`
+- `xml_utils.py` — translate text nodes while preserving inline HTML tags
+- Translation retry with backoff before channel fallback
+- Offline unit tests using mocks (no live API required in CI)
+
+### Changed
+- i18ns.com lookup **disabled by default** (opt-in via `MKTRANSLATE_I18NS=1`)
+- Android XML no longer strips `<font>` and other child elements after translation
+
+### Fixed
+- `.strings` output corruption when translated text contains quotes or backslashes
+- Issue #9 class of bugs: CDATA/HTML strings losing markup after translation
+
 ## [2.0.0] - 2026-06-14
 
 ### Added
