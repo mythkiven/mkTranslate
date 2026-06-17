@@ -38,7 +38,8 @@ class StringsTranslationTest(unittest.TestCase):
             write_text(source, '"hello" = "错误";\n')
             out = os.path.join(tmp, "translate_en_by_youdao_Localizable.strings")
             mkTranslator().translate_strings(source, out, "en", "zh", "youdao")
-            content = open(out, encoding="utf-8").read()
+            with open(out, encoding="utf-8") as handle:
+                content = handle.read()
             self.assertIn('="', content)
             self.assertNotIn("错误", content)
 

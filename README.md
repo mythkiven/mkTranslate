@@ -17,12 +17,29 @@ Keywords: ios localization tool, translate strings xml, i18n python, chinese tra
 
 ## Quick Start
 
+**Install from GitHub** (recommended — v2.0 is on GitHub; PyPI latest is still 1.6.1):
+
 ```bash
-pip install -U mkTranslation
+pip install "git+https://github.com/mythkiven/mkTranslate.git@v2.0.0"
 translate -h
 ```
 
-[中文文档](https://github.com/mythkiven/mkTranslate/blob/master/README_zh.md)
+Or clone and install locally:
+
+```bash
+git clone https://github.com/mythkiven/mkTranslate.git
+cd mkTranslate
+pip install -e .
+translate -h
+```
+
+If `translate` is not found:
+
+```bash
+python3 -m mkTranslation.cli -h
+```
+
+[中文文档](https://github.com/mythkiven/mkTranslate/blob/master/README_zh.md) · [Changelog](CHANGELOG.md) · [Releases](https://github.com/mythkiven/mkTranslate/releases)
 
 **mkTranslate: Faster translation**
 
@@ -45,27 +62,32 @@ translate -h
 
 
 
-### 2.Installation：
+### 2.Installation
 
-- mac or linux:
+**推荐：从 GitHub 安装 2.0**（PyPI 最新仍为 1.6.1，2.0 请用 GitHub）：
+
 ```bash
-pip install -U mkTranslation
+pip install "git+https://github.com/mythkiven/mkTranslate.git@v2.0.0"
+translate -h
+```
+
+或本地安装：
+
+```bash
+git clone https://github.com/mythkiven/mkTranslate.git
+cd mkTranslate
+pip install -e .
+```
+
+- macOS / Linux / Windows（**Python 3.9+**）：
+
+```bash
 python3 -m mkTranslation.cli -h
 ```
-`error: command not found : translate` , [reference here](https://github.com/mythkiven/mkTranslate/issues/1)
 
-- windows:
-```bash
-python -m pip install -U mkTranslation
-python -m mkTranslation.cli -h
-```
+找不到 `translate` 命令时，用 `python3 -m mkTranslation.cli` 代替。详见 [Issue #1](https://github.com/mythkiven/mkTranslate/issues/1)。
 
-If `translate` is not on PATH, use:
-```bash
-python -m mkTranslation.cli -p ./ios.strings -d en -c youdao -s zh
-```
-
-Update existing version: `pip install -U mkTranslation`
+[更新日志](CHANGELOG.md) · [Releases](https://github.com/mythkiven/mkTranslate/releases)
 
 
 
@@ -190,6 +212,7 @@ to ./translate_en_by_google_android.xml
 
 ### 5.Version
 
+- **V2.0.0** (2026) Python 3.9+, deep-translator, ElementTree XML, UTF-16 BOM, `--names`, channel fallback — [Changelog](CHANGELOG.md)
 - V1.6.0 Support windows system
 - V1.5.0 Increase Chinese Simplified and Chinese Traditional Translation
 - V1.4.0 Increase the network detection switch, if google is available, use google translation first, otherwise it will use xc translation
@@ -359,5 +382,14 @@ a translation tool from e-commerce giant company Alibaba.
 
 **After the translation, be sure to verify it manually, otherwise there may be confusion or political risk due to semantic differences. In fact, any translation tool will have this problem, please be careful to deal with**
 
+### Troubleshooting
 
-**More tools to view [mkBox](https://github.com/mythkiven/mkBox)**
+| Problem | Solution |
+|---------|----------|
+| `command not found: translate` | Use `python3 -m mkTranslation.cli` or add pip Scripts to PATH |
+| `UnicodeDecodeError` on `.strings` | Upgrade to 2.0 — auto-detects UTF-16 BOM |
+| Google translation fails | Use `-c youdao` or set `GOOGLE_TRANSLATE_API_KEY` |
+| Android XML strings skipped | Upgrade to 2.0 — uses ElementTree; try `--names` for partial translate |
+| Installed old version from PyPI | PyPI is 1.6.1; install from GitHub: `pip install "git+https://github.com/mythkiven/mkTranslate.git@v2.0.0"` |
+
+**More tools:** [mkBox](https://github.com/mythkiven/mkBox)

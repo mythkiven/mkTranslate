@@ -15,42 +15,38 @@
 
 ![](https://github.com/mythkiven/tmp/blob/master/resource/img/oc/translate_quick.png)
 
+## 快速安装
+
+**推荐从 GitHub 安装 2.0**（PyPI 最新仍为 1.6.1）：
+
+```bash
+pip install "git+https://github.com/mythkiven/mkTranslate.git@v2.0.0"
+translate -h
+```
+
+或本地安装：
+
+```bash
+git clone https://github.com/mythkiven/mkTranslate.git
+cd mkTranslate
+pip install -e .
+```
+
+[更新日志](CHANGELOG.md) · [Releases](https://github.com/mythkiven/mkTranslate/releases)
 
 ### 功能
 
-- 翻译文本文件
-- 翻译.strings文件
-- 翻译.xml文件
-- 翻译 文本
-- 支持谷歌翻译
-- 支持有道翻译
-- 支持 i18ns.com 聚合翻译
-- 会自动检测当前网络情况，从而决定使用谷歌还是有道翻译(有道翻译为了防IP封锁，使用3种渠道切换，所以速度会比谷歌慢一些，如果谷歌能用，将优先使用谷歌翻译)
-- 支持繁体，简体互译
-- 支持 macos , ubuntu , Windows 系统(需要 **Python 3.9+** 环境)
+- 翻译文本 / `.strings` / `.xml` / `.txt`
+- Google 翻译（`deep-translator`）+ 可选 Cloud API
+- 有道翻译（默认）
+- i18ns.com 聚合翻译
+- 简繁互译（离线）
+- UTF-8 / UTF-16 编码自动识别
+- Android XML 使用 ElementTree 解析
+- `--names` 按 key 筛选翻译
+- macOS / Linux / Windows（Python 3.9+）
 
-
-### 安装：
-
-- mac or linux:
-
-```bash
-pip install -U mkTranslation
-python3 -m mkTranslation.cli -h
-```
-
-- windows:
-
-```bash
-python -m pip install -U mkTranslation
-python -m mkTranslation.cli -h
-```
-
-更新现有版本：`pip install -U mkTranslation`
-
-如果安装后,终端不能识别`translate`命令，[参考这里](https://github.com/mythkiven/mkTranslate/issues/1)
-
-### 使用：
+### 使用
 
 #### 选项
 
@@ -283,6 +279,7 @@ to ./translate_en_by_google_android.xml
 
 ### 版本
 
+- **V2.0.0** (2026) Python 3.9+、deep-translator、ElementTree、UTF-16、`--names` — [CHANGELOG](CHANGELOG.md)
 - V1.6.0 支持 windows 系统
 - V1.5.0 增加中文简体和中文繁体的互译
 - V1.4.0 增加网络检测，自动切换谷歌或有道翻译
@@ -308,6 +305,15 @@ to ./translate_en_by_google_android.xml
 
 **翻译之后，请务必人工核实，否则可能会因为语义上的差异带来理解困扰或政治风险。实际上任何一种翻译工具，都会有这种问题，请务必谨慎处理**
 
+### 常见问题
+
+| 问题 | 处理 |
+|------|------|
+| 找不到 `translate` 命令 | 使用 `python3 -m mkTranslation.cli` |
+| `.strings` 编码报错 | 升级到 2.0，自动识别 UTF-16 BOM |
+| Google 翻译失败 | 使用 `-c youdao` 或配置 `GOOGLE_TRANSLATE_API_KEY` |
+| Android XML 被跳过 | 升级到 2.0；可用 `--names` 指定 key |
+| PyPI 装到旧版 | PyPI 为 1.6.1，请从 GitHub 安装 2.0 |
 
 **更多工具参见：[mkBox](https://github.com/mythkiven/mkBox)**
 
